@@ -1,10 +1,10 @@
 [build]
   publish = ".output/public"
-  command = "chmod +x ./scripts/netlify-build.sh && ./scripts/netlify-build.sh"
+  command = "npm ci && npm run build"
 
 [build.environment]
   NODE_VERSION = "20"
-  CI = "true"
+  NODE_OPTIONS = "--max_old_space_size=4096"
 
 # Redirection automatique HTTP vers HTTPS
 [[redirects]]
@@ -20,7 +20,7 @@
   status = 301
   force = true
 
-# SPA fallback pour les routes dynamiques
+# SPA fallback
 [[redirects]]
   from = "/*"
   to = "/index.html"

@@ -1,0 +1,30 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+@theme static {
+    --primary: #ff6b6b;
+    --secondary: #4a4a4a;
+    --background: #1a1b1b;
+    --text: #e0e0e0;
+    --accent: #ffcc00;
+}
+
+/* Smooth scroll personnalisé */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 2rem; /* Offset pour éviter que les sections soient cachées */
+}
+
+/* Animation plus douce pour le scroll */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Respect des préférences d'accessibilité */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}

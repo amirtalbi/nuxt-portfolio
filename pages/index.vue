@@ -3,25 +3,16 @@
         <section
             class="min-h-screen px-8 md:px-12 flex flex-col justify-center gap-6 md:gap-12 lg:gap-16 2xl:gap-32 container mx-auto">
             <div>
-                <h3 class="text-lg sm:text-xl md:text-2xl 2xl:text-2xl font-medium text-gray-300 mb-8 2xl:mb-16 animate-fade-in">
-                    Bonjour, je suis Amir !
-                </h3>
-                <div class="flex flex-col gap-10 lg:flex-row-reverse lg:items-end justify-between">
-                    <div class="animate-fade-in">
-                        <blockquote class="md:w-80 lg:text-lg 2xl:text-xl text-gray-400 italic font-serif">
-                        </blockquote>
-                    </div>
-                    <h2 class="text-4xl md:text-7xl xl:text-8xl 2xl:text-9xl font-bold animate-fade-in">
-                        Développeur
+                <div class="flex flex-col items-center text-center gap-4">
+                    <h3 class="text-lg sm:text-xl md:text-2xl 2xl:text-2xl font-medium text-gray-300 animate-fade-in">Bonjour, je suis Amir !</h3>
+                    <h2 class="text-4xl md:text-7xl xl:text-8xl 2xl:text-9xl font-bold animate-fade-in">Développeur</h2>
+                    <h2 class="text-5xl md:text-8xl xl:text-9xl font-bold flex flex-wrap justify-center gap-2 animate-fade-in">
+                        <span class="mr-2 md:mr-8 text-primary italic">full</span>stack
                     </h2>
                 </div>
             </div>
-            <div class="flex flex-col lg:flex-row-reverse lg:items-center justify-between space-between gap-14">
-                <h2
-                    class="text-5xl md:text-8xl xl:text-9xl font-bold flex flex-wrap lg:justify-end gap-2 animate-fade-in">
-                    <span class="mr-2 md:mr-8 text-primary italic">full</span>stack
-                </h2>
-                <div class="flex flex-col items-start gap-4 animate-fade-in">
+            <div class="flex flex-col items-center text-center lg:flex-row-reverse lg:items-center lg:justify-between space-between gap-14">
+                <div class="flex flex-col items-center gap-4 animate-fade-in">
                     <div class="flex gap-4">
                         <NuxtLink to="https://www.linkedin.com/in/amir-talbi" target="_blank" external
                             class="flex gap-2 items-center justify-center min-h-10 min-w-10 2xl:min-h-14 2xl:min-w-14 rounded-full border-2 border-gray-500 hover:border-primary transition duration-300">

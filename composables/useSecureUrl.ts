@@ -3,12 +3,13 @@
  */
 export const useSecureUrl = () => {
   const config = useRuntimeConfig()
-  
+
   const getSecureUrl = (path: string = '') => {
-    const baseUrl = config.public.baseURL
+    // Fallback si baseURL n'est pas défini
+    const baseUrl = config.public?.baseURL || (process.env.NODE_ENV === 'production' ? 'https://amirtalbi.me' : 'http://localhost:3000')
     return `${baseUrl}${path}`
   }
-  
+
   const forceHttps = () => {
     if (process.client && process.env.NODE_ENV === 'production') {
       if (location.protocol !== 'https:') {
@@ -16,7 +17,7 @@ export const useSecureUrl = () => {
       }
     }
   }
-  
+
   return {
     getSecureUrl,
     forceHttps

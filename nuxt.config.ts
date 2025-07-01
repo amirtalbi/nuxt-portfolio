@@ -15,10 +15,13 @@ export default defineNuxtConfig({
   // Configuration SPA pour Netlify
   ssr: false,
 
-  // Redirection automatique vers HTTPS
+  // Configuration des variables d'environnement
   runtimeConfig: {
     public: {
       baseURL: process.env.NODE_ENV === 'production' ? 'https://amirtalbi.me' : 'http://localhost:3000'
     }
-  }
+  },
+
+  // Configuration du CSS
+  css: ['~/assets/css/style.css']
 })

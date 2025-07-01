@@ -20,7 +20,7 @@
   status = 301
   force = true
 
-# SPA fallback pour les routes dynamiques
+# SPA fallback pour les routes qui ne correspondent pas à des fichiers statiques
 [[redirects]]
   from = "/*"
   to = "/index.html"

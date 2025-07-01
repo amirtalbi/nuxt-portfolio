@@ -4,15 +4,15 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['@nuxt/icon', '@nuxt/ui', '@nuxtjs/tailwindcss'],
 
-  // Configuration pour Netlify - génération statique
+  // Configuration pour Netlify
   nitro: {
-    preset: 'static',
-    output: {
-      dir: 'dist'
+    preset: 'netlify',
+    prerender: {
+      routes: ['/']
     }
   },
 
-  // Force la génération statique pour Netlify
+  // Configuration SPA pour Netlify
   ssr: false,
 
   // Redirection automatique vers HTTPS

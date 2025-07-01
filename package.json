@@ -11,9 +11,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare",
-    "deploy": "npm run build && netlify deploy --prod",
-    "build:netlify": "npm ci && npm run generate"
+    "postinstall": "nuxt prepare"
   },
   "dependencies": {
     "@nuxt/icon": "^1.15.0",

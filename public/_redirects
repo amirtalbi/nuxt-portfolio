@@ -1,8 +1,0 @@
-# Redirection HTTP vers HTTPS (si pas déjà fait par Netlify)
-http://amirtalbi.me/* https://amirtalbi.me/:splat 301!
-
-# Redirection www vers non-www (optionnel)
-https://www.amirtalbi.me/* https://amirtalbi.me/:splat 301!
-
-# SPA fallback
-/*  /index.html  200

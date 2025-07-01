@@ -274,6 +274,7 @@
         Me contacter
       </h2>
       <form
+        netlify
         name="contact"
         method="POST"
         data-netlify="true"

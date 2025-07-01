@@ -239,8 +239,20 @@
 
                     <!-- Contenu de la modale -->
                     <div class="p-4 md:p-6">
-                        <!-- Aperçu du CV -->
-                        <div class="bg-gray-800/50 rounded-xl p-2 md:p-4 mb-4 md:mb-6">
+                        <!-- Aperçu du CV ou fallback mobile -->
+                        <div v-if="isMobile" class="bg-gray-800/50 rounded-xl p-4 mb-4 md:mb-6 flex flex-col items-center justify-center">
+                            <Icon name="fa:file-pdf-o" class="text-4xl text-red-500 mb-2" />
+                            <p class="text-base font-medium mb-2 text-center">Aperçu du CV non supporté sur mobile.</p>
+                            <a href="/amir-talbi-cv.pdf" target="_blank" class="px-4 py-2 bg-primary hover:bg-primary/80 text-white rounded-lg font-medium transition-all duration-200 hover:shadow-lg hover:shadow-primary/25 cursor-pointer flex items-center justify-center gap-2 text-sm md:text-base mb-2">
+                                <Icon name="fa:external-link" />
+                                Ouvrir dans un nouvel onglet
+                            </a>
+                            <a href="/amir-talbi-cv.pdf" download class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-medium transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 text-sm md:text-base">
+                                <Icon name="fa:download" />
+                                Télécharger
+                            </a>
+                        </div>
+                        <div v-else class="bg-gray-800/50 rounded-xl p-2 md:p-4 mb-4 md:mb-6">
                             <div class="aspect-[210/297] bg-white rounded-lg overflow-hidden relative">
                                 <!-- Affichage du PDF directement dans un iframe -->
                                 <iframe 
@@ -300,6 +312,12 @@ import { ref, onMounted, onUnmounted } from 'vue'
 // État de la modale CV
 const showCvModal = ref(false)
 const iframeError = ref(false)
+
+// Détection mobile simple
+const isMobile = ref(false)
+onMounted(() => {
+  isMobile.value = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
+})
 
 // Fonctions pour gérer la modale
 const openCvModal = () => {

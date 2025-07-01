@@ -83,7 +83,7 @@
                                 <div class="flex-shrink-0 w-full max-w-full lg:w-80 xl:w-96">
                                     <div v-if="!project.image"
                                         class="w-full h-48 sm:h-64 md:h-80 bg-gradient-to-br from-primary/20 to-orange-500/20 rounded-xl flex items-center justify-center">
-                                        <Icon name="fa:code" class="text-5xl sm:text-6xl text-primary/60" />
+                                        <Icon name="fa:code" class="text-5xl sm:text-6xl text-gray-400" />
                                     </div>
                                     <img v-else :src="project.image" :alt="project.name"
                                         class="w-full h-48 sm:h-64 md:h-80 object-cover rounded-xl shadow-lg" loading="lazy">

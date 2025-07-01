@@ -18,18 +18,18 @@ echo "📥 Installation des dépendances..."
 npm ci --prefer-offline --no-audit
 
 # Build du projet
-echo "🏗️ Build du projet..."
-npm run build
+echo "🏗️ Génération statique du projet..."
+npm run generate
 
 # Vérification du build
 echo "✅ Vérification du dossier de sortie..."
-if [ -d ".output/public" ]; then
-    echo "✅ Build réussi ! Dossier .output/public créé."
-    ls -la .output/public/
+if [ -d "dist" ]; then
+    echo "✅ Build réussi ! Dossier dist créé."
+    ls -la dist/
 else
-    echo "❌ Erreur : Dossier .output/public non trouvé."
-    echo "Contenu du dossier .output:"
-    ls -la .output/ 2>/dev/null || echo "Dossier .output n'existe pas"
+    echo "❌ Erreur : Dossier dist non trouvé."
+    echo "Contenu du répertoire actuel:"
+    ls -la .
     exit 1
 fi
 

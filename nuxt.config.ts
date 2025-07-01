@@ -3,15 +3,18 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-05-15',
   devtools: { enabled: true },
   modules: ['@nuxt/icon', '@nuxt/ui', '@nuxtjs/tailwindcss'],
-  
-  // Configuration pour Netlify
+
+  // Configuration pour Netlify - génération statique
   nitro: {
-    preset: 'netlify'
+    preset: 'static',
+    output: {
+      dir: 'dist'
+    }
   },
-  
-  // Configuration pour forcer HTTPS en production
-  ssr: true,
-  
+
+  // Force la génération statique pour Netlify
+  ssr: false,
+
   // Redirection automatique vers HTTPS
   runtimeConfig: {
     public: {

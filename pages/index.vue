@@ -273,24 +273,43 @@
       <h2 class="text-3xl md:text-4xl font-bold text-primary mb-8 text-center">
         Me contacter
       </h2>
+      
+      <!-- Message de succès -->
+      <div
+        v-if="contactForm.success.value"
+        class="w-full max-w-lg mb-6 p-4 bg-green-600/20 border border-green-500/50 rounded-lg text-green-300 text-center"
+      >
+        <Icon name="fa:check-circle" class="text-xl mb-2" />
+        <p class="font-medium">Message envoyé avec succès !</p>
+        <p class="text-sm mt-1">Je vous répondrai dans les plus brefs délais.</p>
+      </div>
+
+      <!-- Message d'erreur -->
+      <div
+        v-if="contactForm.error.value"
+        class="w-full max-w-lg mb-6 p-4 bg-red-600/20 border border-red-500/50 rounded-lg text-red-300 text-center"
+      >
+        <Icon name="fa:exclamation-triangle" class="text-xl mb-2" />
+        <p class="font-medium">{{ contactForm.error.value }}</p>
+      </div>
+
       <form
-        netlify
-        name="contact"
-        method="POST"
-        data-netlify="true"
+        @submit.prevent="handleSubmit"
         class="w-full max-w-lg bg-gray-800/80 rounded-2xl shadow-xl p-8 flex flex-col gap-6"
       >
-        <input type="hidden" name="form-name" value="contact" />
         <div>
           <label for="name" class="block text-gray-300 font-medium mb-2"
             >Nom</label
           >
           <input
+            v-model="formData.name"
             type="text"
             id="name"
             name="name"
             required
-            class="w-full px-4 py-2 rounded-lg bg-gray-900/80 border border-gray-700 text-gray-200 focus:outline-none focus:border-primary"
+            :disabled="contactForm.isLoading.value"
+            class="w-full px-4 py-2 rounded-lg bg-gray-900/80 border border-gray-700 text-gray-200 focus:outline-none focus:border-primary disabled:opacity-50 disabled:cursor-not-allowed"
+            placeholder="Votre nom complet"
           />
         </div>
         <div>
@@ -298,11 +317,14 @@
             >Email</label
           >
           <input
+            v-model="formData.email"
             type="email"
             id="email"
             name="email"
             required
-            class="w-full px-4 py-2 rounded-lg bg-gray-900/80 border border-gray-700 text-gray-200 focus:outline-none focus:border-primary"
+            :disabled="contactForm.isLoading.value"
+            class="w-full px-4 py-2 rounded-lg bg-gray-900/80 border border-gray-700 text-gray-200 focus:outline-none focus:border-primary disabled:opacity-50 disabled:cursor-not-allowed"
+            placeholder="votre@email.com"
           />
         </div>
         <div>
@@ -310,18 +332,33 @@
             >Message</label
           >
           <textarea
+            v-model="formData.message"
             id="message"
             name="message"
             rows="5"
             required
-            class="w-full px-4 py-2 rounded-lg bg-gray-900/80 border border-gray-700 text-gray-200 focus:outline-none focus:border-primary"
+            :disabled="contactForm.isLoading.value"
+            class="w-full px-4 py-2 rounded-lg bg-gray-900/80 border border-gray-700 text-gray-200 focus:outline-none focus:border-primary disabled:opacity-50 disabled:cursor-not-allowed resize-none"
+            placeholder="Votre message..."
           ></textarea>
+          <div class="text-right text-xs text-gray-400 mt-1">
+            {{ formData.message.length }}/2000
+          </div>
         </div>
         <button
           type="submit"
-          class="w-full py-3 rounded-lg bg-primary text-white font-bold text-lg hover:bg-primary/80 transition-all"
+          :disabled="contactForm.isLoading.value || !isFormValid"
+          class="w-full py-3 rounded-lg bg-primary text-white font-bold text-lg hover:bg-primary/80 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
-          Envoyer
+          <Icon
+            v-if="contactForm.isLoading.value"
+            name="fa:spinner"
+            class="text-lg animate-spin"
+          />
+          <span v-else>
+            <Icon name="fa:paper-plane" class="text-lg" />
+          </span>
+          {{ contactForm.isLoading.value ? 'Envoi en cours...' : 'Envoyer' }}
         </button>
       </form>
     </section>
@@ -546,7 +583,55 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, computed } from "vue";
+
+// Composable pour le formulaire de contact
+const contactForm = useContactForm();
+
+// Données du formulaire
+const formData = ref({
+  name: '',
+  email: '',
+  message: ''
+});
+
+// Validation du formulaire
+const isFormValid = computed(() => {
+  return formData.value.name.trim().length > 0 &&
+         formData.value.email.trim().length > 0 &&
+         formData.value.message.trim().length > 0 &&
+         formData.value.message.length <= 2000;
+});
+
+// Fonction pour gérer la soumission du formulaire
+const handleSubmit = async () => {
+  try {
+    await contactForm.sendEmail({
+      name: formData.value.name.trim(),
+      email: formData.value.email.trim(),
+      message: formData.value.message.trim()
+    });
+    
+    // Réinitialiser le formulaire en cas de succès
+    formData.value = {
+      name: '',
+      email: '',
+      message: ''
+    };
+    
+    // Scroll vers le haut de la section contact pour voir le message de succès
+    setTimeout(() => {
+      const contactSection = document.getElementById('contact');
+      if (contactSection) {
+        contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }, 100);
+    
+  } catch (error) {
+    // L'erreur est déjà gérée par le composable
+    console.error('Error submitting form:', error);
+  }
+};
 
 // État de la modale CV
 const showCvModal = ref(false);

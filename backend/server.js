@@ -11,21 +11,37 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Configuration CORS pour permettre les requêtes depuis le frontend
+// Configuration CORS pour permettre les requêtes depuis le frontend et sous-domaines
 const corsOptions = {
   origin: function (origin, callback) {
+    // Permettre les requêtes sans origine (ex: Postman, applications mobiles)
+    if (!origin) return callback(null, true);
+    
     // Origines autorisées
     const allowedOrigins = [
       process.env.FRONTEND_URL || 'http://localhost:3000',
-      'http://localhost:3000',  // Développement
+      'http://localhost:3000',  // Développement local
       'https://localhost',      // Production Docker local
       'https://localhost:443',  // Production Docker local avec port
     ];
     
-    // Permettre les requêtes sans origine (ex: Postman, applications mobiles)
-    if (!origin) return callback(null, true);
+    // Extraire le domaine de base depuis FRONTEND_URL ou utiliser une valeur par défaut
+    const baseDomain = process.env.DOMAIN || (process.env.FRONTEND_URL && process.env.FRONTEND_URL.replace(/https?:\/\//, '')) || 'localhost';
     
+    // Patterns pour les sous-domaines (avec Traefik)
+    const domainPatterns = [
+      new RegExp(`^https://${baseDomain.replace('.', '\\.')}$`),                    // Domaine principal
+      new RegExp(`^https://[a-zA-Z0-9-]+\\.${baseDomain.replace('.', '\\.')}$`),   // Sous-domaines
+      new RegExp(`^https://api\\.${baseDomain.replace('.', '\\.')}$`),             // API
+      new RegExp(`^https://traefik\\.${baseDomain.replace('.', '\\.')}$`),         // Dashboard Traefik
+    ];
+    
+    // Vérifier les origines exactes
     if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    }
+    // Vérifier les patterns de sous-domaines
+    else if (domainPatterns.some(pattern => pattern.test(origin))) {
       callback(null, true);
     } else {
       console.log('CORS Error: Origin not allowed:', origin);

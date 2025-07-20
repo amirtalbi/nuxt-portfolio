@@ -1,0 +1,145 @@
+version: '3.8'
+
+services:
+  # Traefik - Reverse Proxy avec SSL automatique
+  traefik:
+    image: traefik:v3.0
+    container_name: portfolio-traefik
+    command:
+      # Configuration API et dashboard
+      - "--api.dashboard=true"
+      - "--api.insecure=false"
+      
+      # Configuration des entry points
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      
+      # Redirection HTTP vers HTTPS (pour production)
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      
+      # Configuration Docker provider
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--providers.docker.network=traefik-network"
+      
+      # Configuration Let's Encrypt
+      - "--certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL:-webinnov.paris@gmail.com}"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/acme.json"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge=true"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
+      
+      # Logs
+      - "--log.level=INFO"
+      - "--accesslog=true"
+    ports:
+      - "80:80"     # HTTP
+      - "443:443"   # HTTPS
+      - "8080:8080" # Dashboard Traefik
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik_acme:/acme.json
+    networks:
+      - traefik-network
+    labels:
+      # Dashboard Traefik (protégé par auth)
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN:-localhost}`)"
+      - "traefik.http.routers.traefik.entrypoints=websecure"
+      - "traefik.http.routers.traefik.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.routers.traefik.middlewares=auth"
+      - "traefik.http.middlewares.auth.basicauth.users=admin:$$2y$$10$$7yMN7ZKE.Kl3QK5Z5.Kl3QK5Z5.Kl3QK5Z5.Kl3QK5Z5"
+    restart: unless-stopped
+
+  # Frontend Portfolio Principal (Image pré-buildée)
+  frontend:
+    image: ghcr.io/amirtalbi/nuxt-portfolio-frontend:latest
+    container_name: portfolio-frontend
+    environment:
+      - NUXT_HOST=0.0.0.0
+      - NUXT_PORT=3000
+      - API_URL=http://backend:3001
+      - NODE_ENV=production
+    depends_on:
+      - backend
+      - traefik
+    networks:
+      - traefik-network
+      - portfolio-network
+    labels:
+      # Configuration Traefik pour le domaine principal
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-network"
+      
+      # Router principal (domaine racine)
+      - "traefik.http.routers.portfolio.rule=Host(`${DOMAIN:-localhost}`)"
+      - "traefik.http.routers.portfolio.entrypoints=websecure"
+      - "traefik.http.routers.portfolio.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.portfolio.service=portfolio"
+      - "traefik.http.services.portfolio.loadbalancer.server.port=3000"
+      
+      # Middleware de sécurité
+      - "traefik.http.routers.portfolio.middlewares=security-headers"
+      - "traefik.http.middlewares.security-headers.headers.customRequestHeaders.X-Forwarded-Proto=https"
+      - "traefik.http.middlewares.security-headers.headers.customRequestHeaders.X-Forwarded-For="
+      - "traefik.http.middlewares.security-headers.headers.customRequestHeaders.X-Real-IP="
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Backend API (Image pré-buildée)
+  backend:
+    image: ghcr.io/amirtalbi/nuxt-portfolio-backend:latest
+    container_name: portfolio-backend
+    environment:
+      - PORT=3001
+      - FRONTEND_URL=https://${DOMAIN:-localhost}
+      - NODE_ENV=production
+      # Variables d'environnement email
+      - EMAIL_SERVICE=${EMAIL_SERVICE:-gmail}
+      - EMAIL_USER=${EMAIL_USER}
+      - EMAIL_PASS=${EMAIL_PASS}
+      - OWNER_EMAIL=${OWNER_EMAIL}
+    networks:
+      - traefik-network
+      - portfolio-network
+    labels:
+      # Configuration Traefik pour l'API
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-network"
+      
+      # Router API (chemin /api)
+      - "traefik.http.routers.api.rule=Host(`${DOMAIN:-localhost}`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.api.entrypoints=websecure"
+      - "traefik.http.routers.api.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.api.service=api"
+      - "traefik.http.services.api.loadbalancer.server.port=3001"
+      
+      # Middleware CORS et rate limiting
+      - "traefik.http.routers.api.middlewares=api-cors,api-ratelimit"
+      - "traefik.http.middlewares.api-cors.headers.accessControlAllowOriginList=https://${DOMAIN:-localhost}"
+      - "traefik.http.middlewares.api-cors.headers.accessControlAllowMethods=GET,POST,OPTIONS"
+      - "traefik.http.middlewares.api-cors.headers.accessControlAllowHeaders=Content-Type,Authorization"
+      - "traefik.http.middlewares.api-ratelimit.ratelimit.burst=10"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+networks:
+  traefik-network:
+    external: true
+  portfolio-network:
+    driver: bridge
+
+volumes:
+  traefik_acme:
+    driver: local

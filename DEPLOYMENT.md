@@ -1,53 +1,106 @@
-# 🚀 Guide de Déploiement VPS avec Traefik
+# Guide de déploiement GitHub Container Registry
 
-## Prérequis
+## 🚀 Vue d'ensemble
 
-✅ VPS Ubuntu/Debian avec accès SSH root  
-✅ Nom de domaine (.nc.me pour les étudiants)  
-✅ Adresse email valide  
+Ce projet utilise GitHub Container Registry (GHCR) pour simplifier le déploiement et la gestion des projets. Les images Docker sont automatiquement construites et publiées sur GitHub, puis déployées sur votre VPS.
 
-## 1. Préparation du VPS
+## 📋 Configuration initiale
+
+### 1. Configurer GitHub Container Registry
+
+1. **Activer GitHub Container Registry** sur votre repository
+2. **Créer un Personal Access Token** avec les permissions :
+   - `write:packages`
+   - `read:packages`
+   - `delete:packages`
+
+### 2. Configuration VPS
 
 ```bash
 # Se connecter au VPS
-ssh root@IP_DE_VOTRE_VPS
+ssh user@votre-vps
 
-# Cloner votre projet
+# Cloner le repository
 git clone https://github.com/votre-username/portfolio.git
 cd portfolio
 
-# Préparer le VPS (Docker, firewall, etc.)
-./scripts/prepare-vps.sh
+# Se connecter à GitHub Container Registry
+echo "YOUR_GITHUB_TOKEN" | docker login ghcr.io -u YOUR_USERNAME --password-stdin
 ```
 
-## 2. Configuration DNS chez NC.ME
+## 🛠️ Workflows de déploiement
 
-Dans votre panneau de gestion DNS :
+### Méthode 1: Déploiement automatique (Recommandé)
 
-| Type  | Nom     | Valeur          | TTL |
-|-------|---------|-----------------|-----|
-| A     | @       | IP_DE_VOTRE_VPS | 300 |
-| A     | www     | IP_DE_VOTRE_VPS | 300 |
-| A     | traefik | IP_DE_VOTRE_VPS | 300 |
-| A     | project1| IP_DE_VOTRE_VPS | 300 |
-| A     | project2| IP_DE_VOTRE_VPS | 300 |
-
-⏰ **Attendre 5-10 minutes** pour la propagation DNS
-
-## 3. Configuration des variables d'environnement
+Chaque push sur `main` déclenche automatiquement :
+1. Build des images Docker
+2. Publication sur GHCR
+3. Images disponibles pour déploiement
 
 ```bash
-# Backend
-cp backend/.env.example backend/.env
-nano backend/.env
+# Déployer depuis le registry
+./scripts/deploy-registry.sh votre-domaine.com
 ```
 
-Configurez :
-```env
-EMAIL_USER=votre.email@gmail.com
-EMAIL_PASS=votre_mot_de_passe_app
-FRONTEND_URL=https://votre-domaine.nc.me
-NODE_ENV=production
+### Méthode 2: Build et push manuel
+
+```bash
+# Build et push des images
+./scripts/build-and-push.sh
+
+# Déployer
+./scripts/deploy-registry.sh votre-domaine.com
+```
+
+### Méthode 3: Déploiement rapide
+
+```bash
+# Mise à jour rapide avec les dernières images
+./scripts/quick-deploy.sh votre-domaine.com
+```
+
+## 🎯 Ajouter un nouveau projet
+
+### Utiliser le script automatique
+
+```bash
+./scripts/add-new-project.sh
+```
+
+Le script vous demandera :
+- Nom du projet
+- Sous-domaine désiré
+- Image Docker
+- Port interne
+
+### Ajout manuel
+
+1. **Ajouter dans `docker-compose.registry.yml`** :
+
+```yaml
+  mon-projet:
+    image: ghcr.io/username/mon-projet:latest
+    container_name: portfolio-mon-projet
+    networks:
+      - traefik-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik-network"
+      - "traefik.http.routers.mon-projet.rule=Host(`projet.votre-domaine.com`)"
+      - "traefik.http.routers.mon-projet.entrypoints=websecure"
+      - "traefik.http.routers.mon-projet.tls.certresolver=letsencrypt"
+      - "traefik.http.services.mon-projet.loadbalancer.server.port=3000"
+    restart: unless-stopped
+```
+
+2. **Configurer DNS** :
+   - Type: A
+   - Nom: projet
+   - Valeur: IP_DE_VOTRE_VPS
+
+3. **Redéployer** :
+```bash
+./scripts/deploy-registry.sh votre-domaine.com
 ```
 
 ## 4. Déploiement automatisé

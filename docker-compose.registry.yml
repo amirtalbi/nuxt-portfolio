@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # Traefik - Reverse Proxy avec SSL automatique
   traefik:
@@ -54,7 +52,7 @@ services:
 
   # Frontend Portfolio Principal (Image pré-buildée)
   frontend:
-    image: ghcr.io/amirtalbi/nuxt-portfolio-frontend:latest
+    image: ghcr.io/amirtalbi/front-portfolio:latest1.0.0
     container_name: portfolio-frontend
     environment:
       - NUXT_HOST=0.0.0.0
@@ -94,7 +92,7 @@ services:
 
   # Backend API (Image pré-buildée)
   backend:
-    image: ghcr.io/amirtalbi/nuxt-portfolio-backend:latest
+    image: ghcr.io/amirtalbi/back-portfolio:1.0.0
     container_name: portfolio-backend
     environment:
       - PORT=3001

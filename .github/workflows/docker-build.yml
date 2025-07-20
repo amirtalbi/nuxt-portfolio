@@ -11,8 +11,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME_FRONTEND: ${{ github.repository }}-frontend
-  IMAGE_NAME_BACKEND: ${{ github.repository }}-backend
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   build-and-push:
@@ -36,25 +35,21 @@ jobs:
       id: meta-frontend
       uses: docker/metadata-action@v5
       with:
-        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_FRONTEND }}
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
         tags: |
-          type=ref,event=branch
-          type=ref,event=pr
-          type=semver,pattern={{version}}
-          type=semver,pattern={{major}}.{{minor}}
-          type=raw,value=latest,enable={{is_default_branch}}
+          type=raw,value=frontend-latest,enable={{is_default_branch}}
+          type=raw,value=frontend-{{branch}}
+          type=raw,value=frontend-{{sha}}
 
     - name: Extract metadata for backend
       id: meta-backend
       uses: docker/metadata-action@v5
       with:
-        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_BACKEND }}
+        images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
         tags: |
-          type=ref,event=branch
-          type=ref,event=pr
-          type=semver,pattern={{version}}
-          type=semver,pattern={{major}}.{{minor}}
-          type=raw,value=latest,enable={{is_default_branch}}
+          type=raw,value=backend-latest,enable={{is_default_branch}}
+          type=raw,value=backend-{{branch}}
+          type=raw,value=backend-{{sha}}
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
@@ -85,5 +80,5 @@ jobs:
 
     - name: Print image URLs
       run: |
-        echo "Frontend image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_FRONTEND }}:latest"
-        echo "Backend image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME_BACKEND }}:latest"
+        echo "Frontend image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:frontend-latest"
+        echo "Backend image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:backend-latest"

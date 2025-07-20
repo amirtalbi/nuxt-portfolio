@@ -14,9 +14,9 @@ services:
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
       
-      # Redirection HTTP vers HTTPS
-      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
-      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      # Pour le développement local, pas de redirection HTTPS forcée
+      # - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      # - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
       
       # Configuration Docker provider
       - "--providers.docker=true"
@@ -79,10 +79,10 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik-network"
       
-      # Router principal (domaine racine)
-      - "traefik.http.routers.portfolio.rule=Host(`${DOMAIN:-localhost}`)"
-      - "traefik.http.routers.portfolio.entrypoints=websecure"
-      - "traefik.http.routers.portfolio.tls.certresolver=letsencrypt"
+      # Router principal (domaine racine) - HTTP pour développement local
+      - "traefik.http.routers.portfolio.rule=Host(`localhost`)"
+      - "traefik.http.routers.portfolio.entrypoints=web"
+      # - "traefik.http.routers.portfolio.tls.certresolver=letsencrypt"  # Désactivé pour local
       - "traefik.http.routers.portfolio.service=portfolio"
       - "traefik.http.services.portfolio.loadbalancer.server.port=3000"
       
@@ -119,16 +119,16 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik-network"
       
-      # Router API (sous-domaine api)
-      - "traefik.http.routers.api.rule=Host(`api.${DOMAIN:-localhost}`)"
-      - "traefik.http.routers.api.entrypoints=websecure"
-      - "traefik.http.routers.api.tls.certresolver=letsencrypt"
+      # Router API (chemin /api) - HTTP pour développement local
+      - "traefik.http.routers.api.rule=Host(`localhost`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.api.entrypoints=web"
+      # - "traefik.http.routers.api.tls.certresolver=letsencrypt"  # Désactivé pour local
       - "traefik.http.routers.api.service=api"
       - "traefik.http.services.api.loadbalancer.server.port=3001"
       
       # Middleware CORS et rate limiting
       - "traefik.http.routers.api.middlewares=api-cors,api-ratelimit"
-      - "traefik.http.middlewares.api-cors.headers.accessControlAllowOriginList=https://${DOMAIN:-localhost}"
+      - "traefik.http.middlewares.api-cors.headers.accessControlAllowOriginList=http://localhost"
       - "traefik.http.middlewares.api-cors.headers.accessControlAllowMethods=GET,POST,OPTIONS"
       - "traefik.http.middlewares.api-cors.headers.accessControlAllowHeaders=Content-Type,Authorization"
       - "traefik.http.middlewares.api-ratelimit.ratelimit.burst=10"

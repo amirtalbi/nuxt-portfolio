@@ -1,58 +1,73 @@
+# Docker Compose pour déploiement avec images GitHub Container Registry
+# Usage: DOMAIN=amirtalbi.me docker compose -f docker-compose.registry.yml up -d
+
 services:
   # Traefik - Reverse Proxy avec SSL automatique
   traefik:
     image: traefik:v3.0
     container_name: portfolio-traefik
     command:
-      # Configuration API et dashboard
+      # API et Dashboard
       - "--api.dashboard=true"
       - "--api.insecure=false"
-      
-      # Configuration des entry points
+
+      # Points d'entrée
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
-      
-      # Redirection HTTP vers HTTPS (pour production)
+
+      # Redirection HTTP vers HTTPS
       - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
       - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
-      
-      # Configuration Docker provider
+
+      # Providers
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--providers.docker.network=traefik-network"
-      
-      # Configuration Let's Encrypt
-      - "--certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL:-webinnov.paris@gmail.com}"
+
+      # Let's Encrypt
+      - "--certificatesresolvers.letsencrypt.acme.tlschallenge=true"
+      - "--certificatesresolvers.letsencrypt.acme.email=${ACME_EMAIL}"
       - "--certificatesresolvers.letsencrypt.acme.storage=/acme.json"
-      - "--certificatesresolvers.letsencrypt.acme.httpchallenge=true"
-      - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
-      
+      - "--certificatesresolvers.letsencrypt.acme.caserver=https://acme-v02.api.letsencrypt.org/directory"
+
       # Logs
       - "--log.level=INFO"
       - "--accesslog=true"
+
+      # Sécurité
+      - "--global.sendanonymoususage=false"
     ports:
-      - "80:80"     # HTTP
-      - "443:443"   # HTTPS
-      - "8080:8080" # Dashboard Traefik
+      - "80:80"
+      - "443:443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
-      - traefik_acme:/acme.json
+      - traefik-acme:/acme.json
     networks:
       - traefik-network
     labels:
-      # Dashboard Traefik (protégé par auth)
+      # Dashboard Traefik
       - "traefik.enable=true"
+      - "traefik.docker.network=traefik-network"
+
+      # Router pour le dashboard
       - "traefik.http.routers.traefik.rule=Host(`traefik.${DOMAIN:-localhost}`)"
       - "traefik.http.routers.traefik.entrypoints=websecure"
       - "traefik.http.routers.traefik.tls.certresolver=letsencrypt"
       - "traefik.http.routers.traefik.service=api@internal"
+
+      # Authentification basique pour le dashboard
       - "traefik.http.routers.traefik.middlewares=auth"
-      - "traefik.http.middlewares.auth.basicauth.users=admin:$$2y$$10$$7yMN7ZKE.Kl3QK5Z5.Kl3QK5Z5.Kl3QK5Z5.Kl3QK5Z5"
+      - "traefik.http.middlewares.auth.basicauth.users=${TRAEFIK_AUTH_USER}:${TRAEFIK_AUTH_PASSWORD}"
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "traefik", "healthcheck"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
 
   # Frontend Portfolio Principal (Image pré-buildée)
   frontend:
-    image: ghcr.io/amirtalbi/front-portfolio:latest1.0.0
+    image: ghcr.io/amirtalbi/portfolio-frontend:latest
     container_name: portfolio-frontend
     environment:
       - NUXT_HOST=0.0.0.0
@@ -69,14 +84,14 @@ services:
       # Configuration Traefik pour le domaine principal
       - "traefik.enable=true"
       - "traefik.docker.network=traefik-network"
-      
+
       # Router principal (domaine racine)
       - "traefik.http.routers.portfolio.rule=Host(`${DOMAIN:-localhost}`)"
       - "traefik.http.routers.portfolio.entrypoints=websecure"
       - "traefik.http.routers.portfolio.tls.certresolver=letsencrypt"
       - "traefik.http.routers.portfolio.service=portfolio"
       - "traefik.http.services.portfolio.loadbalancer.server.port=3000"
-      
+
       # Middleware de sécurité
       - "traefik.http.routers.portfolio.middlewares=security-headers"
       - "traefik.http.middlewares.security-headers.headers.customRequestHeaders.X-Forwarded-Proto=https"
@@ -84,7 +99,15 @@ services:
       - "traefik.http.middlewares.security-headers.headers.customRequestHeaders.X-Real-IP="
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/"]
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:3000/",
+        ]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -92,7 +115,7 @@ services:
 
   # Backend API (Image pré-buildée)
   backend:
-    image: ghcr.io/amirtalbi/back-portfolio:1.0.0
+    image: ghcr.io/amirtalbi/portfolio-backend:latest
     container_name: portfolio-backend
     environment:
       - PORT=3001
@@ -110,14 +133,14 @@ services:
       # Configuration Traefik pour l'API
       - "traefik.enable=true"
       - "traefik.docker.network=traefik-network"
-      
+
       # Router API (chemin /api)
       - "traefik.http.routers.api.rule=Host(`${DOMAIN:-localhost}`) && PathPrefix(`/api`)"
       - "traefik.http.routers.api.entrypoints=websecure"
       - "traefik.http.routers.api.tls.certresolver=letsencrypt"
       - "traefik.http.routers.api.service=api"
       - "traefik.http.services.api.loadbalancer.server.port=3001"
-      
+
       # Middleware CORS et rate limiting
       - "traefik.http.routers.api.middlewares=api-cors,api-ratelimit"
       - "traefik.http.middlewares.api-cors.headers.accessControlAllowOriginList=https://${DOMAIN:-localhost}"
@@ -126,7 +149,15 @@ services:
       - "traefik.http.middlewares.api-ratelimit.ratelimit.burst=10"
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001/api/health"]
+      test:
+        [
+          "CMD",
+          "wget",
+          "--no-verbose",
+          "--tries=1",
+          "--spider",
+          "http://localhost:3001/api/health",
+        ]
       interval: 30s
       timeout: 10s
       retries: 3

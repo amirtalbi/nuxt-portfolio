@@ -15,7 +15,7 @@ RUN npm config set fund false && \
     npm config set progress false
 
 # Installer les dépendances (avec cache optimisé)
-RUN npm ci --omit=dev --ignore-scripts --prefer-offline --no-audit
+RUN npm install --omit=dev --ignore-scripts --no-audit
 
 # Copier le code source
 COPY . .

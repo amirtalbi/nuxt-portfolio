@@ -5,20 +5,20 @@ services:
     image: traefik:v2.11
     container_name: traefik
     command:
-      - "--api.dashboard=true"
       - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
+      - "--certificatesresolvers.letsresolver.acme.httpchallenge=true"
+      - "--certificatesresolvers.letsresolver.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.letsresolver.acme.email=ton@email.com"
+      - "--certificatesresolvers.letsresolver.acme.storage=/letsencrypt/acme.json"
     ports:
       - "80:80"
-      - "8080:8080" # dashboard
+      - "443:443"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.traefik.rule=Host(`traefik.amirtalbi.me`)"
-      - "traefik.http.routers.traefik.service=api@internal"
-      - "traefik.http.routers.traefik.entrypoints=web"
+      - "./letsencrypt:/letsencrypt"
 
   frontend:
     image: ghcr.io/amirtalbi/front-portfolio:1.0.0
@@ -27,7 +27,9 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.frontend.rule=Host(`amirtalbi.me`)"
-      - "traefik.http.routers.frontend.entrypoints=web"
+      - "traefik.http.routers.frontend.entrypoints=websecure"
+      - "traefik.http.routers.frontend.tls=true"
+      - "traefik.http.routers.frontend.tls.certresolver=letsresolver"
     expose:
       - "3000"
 
@@ -38,6 +40,8 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.backend.rule=Host(`api.amirtalbi.me`)"
-      - "traefik.http.routers.backend.entrypoints=web"
+      - "traefik.http.routers.backend.entrypoints=websecure"
+      - "traefik.http.routers.backend.tls=true"
+      - "traefik.http.routers.backend.tls.certresolver=letsresolver"
     expose:
       - "3001"

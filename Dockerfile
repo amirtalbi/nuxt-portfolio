@@ -3,11 +3,19 @@ FROM node:20-alpine as builder
 # Définir le répertoire de travail
 WORKDIR /app
 
+# Installer les dépendances système nécessaires
+RUN apk add --no-cache python3 make g++
+
 # Copier les fichiers package.json
 COPY package*.json ./
 
-# Installer les dépendances
-RUN npm ci
+# Configurer npm pour des builds plus rapides
+RUN npm config set fund false && \
+    npm config set audit false && \
+    npm config set progress false
+
+# Installer les dépendances (avec cache optimisé)
+RUN npm ci --only=production --ignore-scripts --prefer-offline --no-audit
 
 # Copier le code source
 COPY . .

@@ -57,6 +57,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        - NODE_ENV=production
     container_name: portfolio-frontend
     environment:
       - NUXT_HOST=0.0.0.0
@@ -69,6 +71,9 @@ services:
     networks:
       - traefik-network
       - portfolio-network
+    # ⚠️ Ne pas utiliser de volumes en production pour éviter les conflits
+    # volumes:
+    #   - .:/app  # ❌ Cause des problèmes de performance sur macOS
     labels:
       # Configuration Traefik pour le domaine principal
       - "traefik.enable=true"

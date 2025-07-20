@@ -1,0 +1,39 @@
+FROM node:20-alpine
+
+# Installer les dépendances système nécessaires
+RUN apk add --no-cache python3 make g++ dumb-init
+
+# Définir le répertoire de travail
+WORKDIR /app
+
+# Créer un utilisateur non-root
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nuxt -u 1001
+
+# Copier les fichiers package.json
+COPY package*.json ./
+
+# Configurer npm pour des builds plus rapides
+RUN npm config set fund false && \
+    npm config set audit false && \
+    npm config set progress false
+
+# Installer les dépendances en mode développement
+RUN npm ci --prefer-offline --no-audit
+
+# Copier le code source et changer les permissions
+COPY --chown=nuxt:nodejs . .
+
+# Passer à l'utilisateur non-root
+USER nuxt
+
+# Exposer le port
+EXPOSE 3000
+
+# Variables d'environnement
+ENV NUXT_HOST=0.0.0.0
+ENV NUXT_PORT=3000
+ENV NODE_ENV=development
+
+# Commande de démarrage pour le développement
+CMD ["dumb-init", "npm", "run", "dev"]

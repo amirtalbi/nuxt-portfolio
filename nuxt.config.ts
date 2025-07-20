@@ -13,8 +13,8 @@ export default defineNuxtConfig({
     private: {},
     // Variables publiques (exposées côté client)
     public: {
-      // En production Docker, utiliser l'URL relative pour passer par nginx
-      apiUrl: process.env.API_URL || 'http://localhost:3001'
+      // En production Docker, utiliser le nom du service backend
+      apiUrl: process.env.API_URL || 'http://backend:3001'
     }
   },
 

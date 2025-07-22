@@ -11,12 +11,15 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// Configuration pour faire confiance au proxy (Traefik)
+app.set('trust proxy', true);
+
 // Configuration CORS pour permettre les requêtes depuis le frontend et sous-domaines
 const corsOptions = {
   origin: function (origin, callback) {
     // Permettre les requêtes sans origine (ex: Postman, applications mobiles)
     if (!origin) return callback(null, true);
-    
+
     // Origines autorisées
     const allowedOrigins = [
       process.env.FRONTEND_URL || 'http://localhost:3000',
@@ -24,10 +27,10 @@ const corsOptions = {
       'https://localhost',      // Production Docker local
       'https://localhost:443',  // Production Docker local avec port
     ];
-    
+
     // Extraire le domaine de base depuis FRONTEND_URL ou utiliser une valeur par défaut
     const baseDomain = process.env.DOMAIN || (process.env.FRONTEND_URL && process.env.FRONTEND_URL.replace(/https?:\/\//, '')) || 'localhost';
-    
+
     // Patterns pour les sous-domaines (avec Traefik)
     const domainPatterns = [
       new RegExp(`^https://${baseDomain.replace('.', '\\.')}$`),                    // Domaine principal
@@ -35,7 +38,7 @@ const corsOptions = {
       new RegExp(`^https://api\\.${baseDomain.replace('.', '\\.')}$`),             // API
       new RegExp(`^https://traefik\\.${baseDomain.replace('.', '\\.')}$`),         // Dashboard Traefik
     ];
-    
+
     // Vérifier les origines exactes
     if (allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
@@ -142,7 +145,7 @@ const createEmailTemplate = (name, email, message) => {
           left: 0;
           right: 0;
           bottom: 0;
-          background: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.1) 75%), 
+          background: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.1) 75%),
                       linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.1) 75%);
           background-size: 20px 20px;
           background-position: 0 0, 10px 10px;
@@ -291,7 +294,7 @@ const createEmailTemplate = (name, email, message) => {
           <h1><span class="emoji">📧</span>Nouveau message de contact</h1>
           <p>Votre portfolio a reçu un nouveau message !</p>
         </div>
-        
+
         <div class="content">
           <div class="info-section">
             <h3><span class="emoji">👤</span>Informations de contact</h3>
@@ -315,13 +318,13 @@ const createEmailTemplate = (name, email, message) => {
               })}</span>
             </div>
           </div>
-          
+
           <div class="message-section">
             <h3><span class="emoji">💬</span>Message</h3>
             <div class="message-content">${message}</div>
           </div>
         </div>
-        
+
         <div class="footer">
           <p>Ce message a été envoyé depuis votre <a href="${process.env.FRONTEND_URL || 'https://localhost'}" class="portfolio-link">portfolio</a></p>
           <p class="timestamp">Email automatique - Ne pas répondre à cette adresse</p>
@@ -334,8 +337,8 @@ const createEmailTemplate = (name, email, message) => {
 
 // Route de test
 app.get('/api/health', (req, res) => {
-  res.json({ 
-    status: 'OK', 
+  res.json({
+    status: 'OK',
     message: 'Backend portfolio service is running',
     timestamp: new Date().toISOString()
   });
@@ -424,7 +427,7 @@ app.post('/api/contact', emailLimiter, async (req, res) => {
               left: 0;
               right: 0;
               bottom: 0;
-              background: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.1) 75%), 
+              background: linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.1) 75%),
                           linear-gradient(45deg, rgba(255,255,255,0.1) 25%, transparent 25%, transparent 75%, rgba(255,255,255,0.1) 75%);
               background-size: 20px 20px;
               background-position: 0 0, 10px 10px;
@@ -498,19 +501,19 @@ app.post('/api/contact', emailLimiter, async (req, res) => {
             <div class="content">
               <p>Bonjour <strong>${name}</strong>,</p>
               <p>Merci pour votre message ! Je l'ai bien reçu et je vous répondrai dans les plus brefs délais.</p>
-              
+
               <div class="message-preview">
                 <strong>Rappel de votre message :</strong><br><br>
                 ${message}
               </div>
-              
+
               <div class="signature">
                 <p style="margin: 0;"><strong>À bientôt,</strong></p>
                 <p style="margin: 8px 0 0 0; color: #ff6b6b; font-weight: 600; font-size: 18px;">Amir Talbi</p>
                 <p style="margin: 4px 0 0 0; color: #6c757d; font-size: 14px;">Développeur Full Stack</p>
                 <p style="margin: 12px 0 0 0; font-size: 14px;">
-                  🌐 <a href="${process.env.FRONTEND_URL || 'https://localhost'}" style="color: #ff6b6b; text-decoration: none;">Portfolio</a> | 
-                  💼 <a href="https://www.linkedin.com/in/amir-talbi" style="color: #0077b5; text-decoration: none;">LinkedIn</a> | 
+                  🌐 <a href="${process.env.FRONTEND_URL || 'https://localhost'}" style="color: #ff6b6b; text-decoration: none;">Portfolio</a> |
+                  💼 <a href="https://www.linkedin.com/in/amir-talbi" style="color: #0077b5; text-decoration: none;">LinkedIn</a> |
                   💻 <a href="https://github.com/amirtalbi" style="color: #333; text-decoration: none;">GitHub</a>
                 </p>
               </div>

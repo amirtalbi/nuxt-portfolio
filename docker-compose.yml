@@ -37,27 +37,6 @@ services:
     networks:
       - portfolio-network
 
-  backend:
-    image: ghcr.io/amirtalbi/back-portfolio:1.0.0
-    container_name: backend
-    platform: linux/amd64
-    environment:
-      - EMAIL_SERVICE=gmail
-      - EMAIL_USER=${EMAIL_USER}
-      - EMAIL_PASS=${EMAIL_PASS}
-      - OWNER_EMAIL=${OWNER_EMAIL}
-      - FRONTEND_URL=https://amirtalbi.me
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.backend.rule=Host(`api.amirtalbi.me`)"
-      - "traefik.http.routers.backend.entrypoints=websecure"
-      - "traefik.http.routers.backend.tls=true"
-      - "traefik.http.routers.backend.tls.certresolver=letsresolver"
-    expose:
-      - "3001"
-    networks:
-      - portfolio-network
-
 networks:
   portfolio-network:
     driver: bridge

@@ -265,103 +265,7 @@
       </div>
     </section>
 
-    <!-- Section Contact -->
-    <section
-      id="contact"
-      class="w-full bg-gray-900/80 py-16 px-4 flex flex-col items-center justify-center"
-    >
-      <h2 class="text-3xl md:text-4xl font-bold text-primary mb-8 text-center">
-        Me contacter
-      </h2>
-      
-      <!-- Message de succès -->
-      <div
-        v-if="contactForm.success.value"
-        class="w-full max-w-lg mb-6 p-4 bg-green-600/20 border border-green-500/50 rounded-lg text-green-300 text-center"
-      >
-        <Icon name="fa:check-circle" class="text-xl mb-2" />
-        <p class="font-medium">Message envoyé avec succès !</p>
-        <p class="text-sm mt-1">Je vous répondrai dans les plus brefs délais.</p>
-      </div>
 
-      <!-- Message d'erreur -->
-      <div
-        v-if="contactForm.error.value"
-        class="w-full max-w-lg mb-6 p-4 bg-red-600/20 border border-red-500/50 rounded-lg text-red-300 text-center"
-      >
-        <Icon name="fa:exclamation-triangle" class="text-xl mb-2" />
-        <p class="font-medium">{{ contactForm.error.value }}</p>
-      </div>
-
-      <form
-        @submit.prevent="handleSubmit"
-        class="w-full max-w-lg bg-gray-800/80 rounded-2xl shadow-xl p-8 flex flex-col gap-6"
-      >
-        <div>
-          <label for="name" class="block text-gray-300 font-medium mb-2"
-            >Nom</label
-          >
-          <input
-            v-model="formData.name"
-            type="text"
-            id="name"
-            name="name"
-            required
-            :disabled="contactForm.isLoading.value"
-            class="w-full px-4 py-2 rounded-lg bg-gray-900/80 border border-gray-700 text-gray-200 focus:outline-none focus:border-primary disabled:opacity-50 disabled:cursor-not-allowed"
-            placeholder="Votre nom complet"
-          />
-        </div>
-        <div>
-          <label for="email" class="block text-gray-300 font-medium mb-2"
-            >Email</label
-          >
-          <input
-            v-model="formData.email"
-            type="email"
-            id="email"
-            name="email"
-            required
-            :disabled="contactForm.isLoading.value"
-            class="w-full px-4 py-2 rounded-lg bg-gray-900/80 border border-gray-700 text-gray-200 focus:outline-none focus:border-primary disabled:opacity-50 disabled:cursor-not-allowed"
-            placeholder="votre@email.com"
-          />
-        </div>
-        <div>
-          <label for="message" class="block text-gray-300 font-medium mb-2"
-            >Message</label
-          >
-          <textarea
-            v-model="formData.message"
-            id="message"
-            name="message"
-            rows="5"
-            required
-            :disabled="contactForm.isLoading.value"
-            class="w-full px-4 py-2 rounded-lg bg-gray-900/80 border border-gray-700 text-gray-200 focus:outline-none focus:border-primary disabled:opacity-50 disabled:cursor-not-allowed resize-none"
-            placeholder="Votre message..."
-          ></textarea>
-          <div class="text-right text-xs text-gray-400 mt-1">
-            {{ formData.message.length }}/2000
-          </div>
-        </div>
-        <button
-          type="submit"
-          :disabled="contactForm.isLoading.value || !isFormValid"
-          class="w-full py-3 rounded-lg bg-primary text-white font-bold text-lg hover:bg-primary/80 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-        >
-          <Icon
-            v-if="contactForm.isLoading.value"
-            name="fa:spinner"
-            class="text-lg animate-spin"
-          />
-          <span v-else>
-            <Icon name="fa:paper-plane" class="text-lg" />
-          </span>
-          {{ contactForm.isLoading.value ? 'Envoi en cours...' : 'Envoyer' }}
-        </button>
-      </form>
-    </section>
 
     <!-- Footer -->
     <footer
@@ -427,18 +331,6 @@
         </div>
       </div>
     </footer>
-
-    <!-- Sticky Contact Button -->
-    <button
-      @click="scrollToContact"
-      class="fixed right-4 top-2/5 z-50 flex flex-col items-end group"
-    >
-      <span
-        class="bg-primary text-white py-3 px-2 shadow-lg font-bold text-sm tracking-widest rounded-l-none rounded-r-lg origin-right rotate-270 group-hover:bg-primary/80 transition-all cursor-pointer"
-      >
-        Me contacter
-      </span>
-    </button>
 
     <!-- Modale CV Custom -->
     <Teleport to="body" v-if="showCvModal">
@@ -584,54 +476,6 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted, computed } from "vue";
-
-// Composable pour le formulaire de contact
-const contactForm = useContactForm();
-
-// Données du formulaire
-const formData = ref({
-  name: '',
-  email: '',
-  message: ''
-});
-
-// Validation du formulaire
-const isFormValid = computed(() => {
-  return formData.value.name.trim().length > 0 &&
-         formData.value.email.trim().length > 0 &&
-         formData.value.message.trim().length > 0 &&
-         formData.value.message.length <= 2000;
-});
-
-// Fonction pour gérer la soumission du formulaire
-const handleSubmit = async () => {
-  try {
-    await contactForm.sendEmail({
-      name: formData.value.name.trim(),
-      email: formData.value.email.trim(),
-      message: formData.value.message.trim()
-    });
-    
-    // Réinitialiser le formulaire en cas de succès
-    formData.value = {
-      name: '',
-      email: '',
-      message: ''
-    };
-    
-    // Scroll vers le haut de la section contact pour voir le message de succès
-    setTimeout(() => {
-      const contactSection = document.getElementById('contact');
-      if (contactSection) {
-        contactSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }, 100);
-    
-  } catch (error) {
-    // L'erreur est déjà gérée par le composable
-    console.error('Error submitting form:', error);
-  }
-};
 
 // État de la modale CV
 const showCvModal = ref(false);
@@ -798,14 +642,6 @@ const skills = ref([
     skills: ["VS Code", "Figma", "Postman", "Trello", "Minio", "Socket.io"],
   },
 ]);
-
-// Scroll vers la section contact
-const scrollToContact = () => {
-  const el = document.getElementById("contact");
-  if (el) {
-    el.scrollIntoView({ behavior: "smooth" });
-  }
-};
 </script>
 
 <style scoped>

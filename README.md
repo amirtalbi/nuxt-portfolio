@@ -1,16 +1,14 @@
-# Portfolio Nuxt.js avec Service Express
+# Portfolio Nuxt.js
 
-Un portfolio moderne construit avec Nuxt.js et un service Express pour la gestion des emails de contact.
+Un portfolio moderne et minimaliste construit avec Nuxt.js.
 
 ## 🚀 Fonctionnalités
 
 - ✨ Interface moderne et responsive avec Nuxt.js
-- 📧 Service Express pour l'envoi d'emails avec templates HTML
-- 🔒 Configuration HTTPS avec certificats auto-signés
-- 🐳 Déploiement Docker avec Nginx comme proxy
-- 🛡️ Rate limiting et sécurité
-- 📱 Templates d'emails responsive et modernes
+-  Configuration HTTPS prête pour la production
+- 🐳 Déploiement Docker avec Traefik comme proxy reverse
 - 🎨 Design avec Tailwind CSS et Nuxt UI
+- 📱 Interface optimisée mobile et desktop
 
 ## 📋 Prérequis
 
@@ -27,62 +25,25 @@ Un portfolio moderne construit avec Nuxt.js et un service Express pour la gestio
 git clone <url-du-repo>
 cd portfolio
 
-# Configuration et installation
-./scripts/dev-setup.sh
+# Installation des dépendances
+npm install
 
-# Démarrer le backend (Terminal 1)
-cd backend && npm run dev
-
-# Démarrer le frontend (Terminal 2)
+# Démarrer le frontend
 npm run dev
 ```
 
 **Accès en développement :**
 - Frontend : http://localhost:3000
-- API Backend : http://localhost:3001
 
 ### Mode Production (Docker)
 
 ```bash
 # Configuration complète avec Docker
-./scripts/setup.sh
+docker-compose up -d
 ```
 
 **Accès en production :**
-- Site principal : https://localhost (HTTPS par défaut sur port 443)
-- HTTP : http://localhost (redirige automatiquement vers HTTPS)
-
-## ⚙️ Configuration Email
-
-### 1. Configurer Gmail (Recommandé)
-
-Éditez le fichier `backend/.env` :
-
-```env
-EMAIL_SERVICE=gmail
-EMAIL_USER=votre-email@gmail.com
-EMAIL_PASS=votre-app-password-gmail
-OWNER_EMAIL=votre-email@gmail.com
-```
-
-### 2. Générer un App Password Gmail
-
-1. Activez l'authentification à deux facteurs sur votre compte Google
-2. Allez dans **Paramètres Google** → **Sécurité** → **Mots de passe d'application**
-3. Générez un nouveau mot de passe d'application
-4. Utilisez ce mot de passe dans `EMAIL_PASS` (pas votre mot de passe principal)
-
-### 3. Configuration SMTP personnalisée (Alternative)
-
-```env
-EMAIL_SERVICE=smtp
-SMTP_HOST=smtp.votre-provider.com
-SMTP_PORT=587
-SMTP_SECURE=false
-EMAIL_USER=votre-email@provider.com
-EMAIL_PASS=votre-mot-de-passe
-OWNER_EMAIL=votre-email@provider.com
-```
+- Site principal : https://amirtalbi.me
 
 ## 🐳 Docker
 

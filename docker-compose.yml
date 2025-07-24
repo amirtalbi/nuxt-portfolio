@@ -64,6 +64,8 @@ services:
       - MONGODB_URI=mongodb://jefe_dz:password91_secure!@mongo:27017/auth-api?authSource=admin
     depends_on:
       - mongo
+    networks:
+      - portfolio-network
 
   mongo:
     image: mongo:latest

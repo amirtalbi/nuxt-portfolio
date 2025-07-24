@@ -5,17 +5,28 @@ services:
     image: traefik:v2.11
     container_name: traefik
     command:
+      - "--api.dashboard=true"
+      - "--api.insecure=false"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
       - "--providers.docker=true"
       - "--providers.docker.exposedbydefault=false"
       - "--certificatesresolvers.letsresolver.acme.httpchallenge=true"
       - "--certificatesresolvers.letsresolver.acme.httpchallenge.entrypoint=web"
-      - "--certificatesresolvers.letsresolver.acme.email=ton@email.com"
+      - "--certificatesresolvers.letsresolver.acme.email=amirotalbi94@gmail.com"
       - "--certificatesresolvers.letsresolver.acme.storage=/letsencrypt/acme.json"
     ports:
       - "80:80"
       - "443:443"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard.rule=Host(`traefik.amirtalbi.me`)"
+      - "traefik.http.routers.dashboard.entrypoints=websecure"
+      - "traefik.http.routers.dashboard.tls=true"
+      - "traefik.http.routers.dashboard.tls.certresolver=letsresolver"
+      - "traefik.http.routers.dashboard.service=api@internal"
+      - "traefik.http.routers.dashboard.middlewares=auth"
+      - "traefik.http.middlewares.auth.basicauth.users=admin:$$2y$$10$$DqJOWnyEJOoByI8U.pJsHOCu4FzrZjsBmh/LQo8F2Hk3W6MwT1zBS"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "./letsencrypt:/letsencrypt"

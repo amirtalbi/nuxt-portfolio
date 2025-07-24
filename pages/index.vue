@@ -549,6 +549,16 @@ const projects = ref([
     finished: false,
   },
   {
+    name: "GoVTC API",
+    title: "API complète pour plateforme de transport VTC",
+    description:
+      "GoVTC API est une API robuste développée pour une plateforme de transport VTC. Elle gère l'authentification, la géolocalisation en temps réel, les réservations, les paiements et la communication entre chauffeurs et passagers via WebSockets. L'architecture modulaire avec NestJS permet une scalabilité optimale.",
+    image: "",
+    technologies: ["NestJS", "MongoDB", "Socket.io", "Docker", "JWT", "TypeScript"],
+    link: "https://go-vtc.amirtalbi.me/",
+    finished: true,
+  },
+  {
     name: "Webinnov Paris",
     title: "Un site vitrine pour une agence de développement web",
     description:

@@ -37,6 +37,38 @@ services:
     networks:
       - portfolio-network
 
+  go-vtc-api:
+    image: ghcr.io/amirtalbi/vtc-portfolio:1.0.0
+    container_name: go-vtc-api
+    platform: linux/amd64
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.govtc.rule=Host(`go-vtc.amirtalbi.me`)"
+      - "traefik.http.routers.govtc.entrypoints=websecure"
+      - "traefik.http.routers.govtc.tls=true"
+      - "traefik.http.routers.govtc.tls.certresolver=letsresolver"
+    expose:
+      - "3000"
+    environment:
+      - MONGODB_URI=mongodb://jefe_dz:password91_secure!@mongo:27017/auth-api?authSource=admin
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: jefe_dz
+      MONGO_INITDB_ROOT_PASSWORD: password91_secure!
+    ports:
+      - "27017:27017"
+    volumes:
+      - .:/usr/src/app
+    depends_on:
+      - frontend
+    networks:
+      - portfolio-network
+
 networks:
   portfolio-network:
     driver: bridge

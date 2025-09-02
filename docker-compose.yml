@@ -4,7 +4,7 @@ services:
     container_name: traefik
     command:
       - "--api.dashboard=true"
-      - "--api.insecure=false"
+      - "--api.insecure=true"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
       - "--providers.docker=true"
@@ -16,15 +16,14 @@ services:
     ports:
       - "80:80"
       - "443:443"
+      - "8080:8080"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.dashboard.rule=Host(`traefik.amirtalbi.me`)"
-      - "traefik.http.routers.dashboard.entrypoints=websecure"
-      - "traefik.http.routers.dashboard.tls=true"
-      - "traefik.http.routers.dashboard.tls.certresolver=letsresolver"
+      - "traefik.http.routers.dashboard.entrypoints=web"
       - "traefik.http.routers.dashboard.service=api@internal"
       - "traefik.http.routers.dashboard.middlewares=auth"
-      - "traefik.http.middlewares.auth.basicauth.users=admin:$$2y$$10$$DqJOWnyEJOoByI8U.pJsHOCu4FzrZjsBmh/LQo8F2Hk3W6MwT1zBS"
+      - "traefik.http.middlewares.auth.basicauth.users=admin:$$apr1$$Phe9uh4t$$YUc2w9.EpcjA1yifs80qW0"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "./letsencrypt:/letsencrypt"
@@ -38,14 +37,33 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.frontend.rule=Host(`amirtalbi.me`)"
-      - "traefik.http.routers.frontend.entrypoints=websecure"
-      - "traefik.http.routers.frontend.tls=true"
+      - "traefik.http.routers.frontend.entrypoints=web,websecure"
       - "traefik.http.routers.frontend.tls.certresolver=letsresolver"
       - "traefik.http.services.frontend.loadbalancer.server.port=3000"
     expose:
       - "3000"
     depends_on:
       - traefik
+    networks:
+      - portfolio-network
+
+  mongo:
+    image: mongo:4.4
+    container_name: mongo
+    platform: linux/amd64
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: jefe_dz
+      MONGO_INITDB_ROOT_PASSWORD: password91_secure!
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
     networks:
       - portfolio-network
 
@@ -64,11 +82,13 @@ services:
       - "3000"
     environment:
       - MONGODB_URI=mongodb://jefe_dz:password91_secure!@mongo:27017/auth-api?authSource=admin
+      - NODE_ENV=production
     depends_on:
       - mongo
       - traefik
     networks:
       - portfolio-network
+    restart: unless-stopped
 
   mongo:
     image: mongo:latest

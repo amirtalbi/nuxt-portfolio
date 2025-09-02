@@ -4,7 +4,7 @@ services:
     container_name: traefik
     command:
       - "--api.dashboard=true"
-      - "--api.insecure=true"
+      - "--api.insecure=false"
       - "--entrypoints.web.address=:80"
       - "--entrypoints.websecure.address=:443"
       - "--providers.docker=true"
@@ -89,21 +89,6 @@ services:
     networks:
       - portfolio-network
     restart: unless-stopped
-
-  mongo:
-    image: mongo:latest
-    container_name: mongo
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: jefe_dz
-      MONGO_INITDB_ROOT_PASSWORD: password91_secure!
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo_data:/data/db
-    depends_on:
-      - frontend
-    networks:
-      - portfolio-network
 
 networks:
   portfolio-network:

@@ -94,6 +94,7 @@ networks:
   portfolio-network:
     driver: bridge
     name: portfolio-network
+    external: true
 
 volumes:
   mongo_data:

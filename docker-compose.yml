@@ -1,3 +1,5 @@
+version: "3.9"
+
 services:
   traefik:
     image: traefik:v2.11
@@ -19,7 +21,8 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.dashboard.rule=Host(`traefik.amirtalbi.me`)"
-      - "traefik.http.routers.dashboard.entrypoints=web"
+      - "traefik.http.routers.dashboard.entrypoints=websecure"
+      - "traefik.http.routers.dashboard.tls.certresolver=letsresolver"
       - "traefik.http.routers.dashboard.service=api@internal"
       - "traefik.http.routers.dashboard.middlewares=auth"
       - "traefik.http.middlewares.auth.basicauth.users=admin:$$apr1$$Phe9uh4t$$YUc2w9.EpcjA1yifs80qW0"
@@ -53,8 +56,6 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: jefe_dz
       MONGO_INITDB_ROOT_PASSWORD: password91_secure!
-    ports:
-      - "27017:27017"
     volumes:
       - mongo_data:/data/db
     healthcheck:

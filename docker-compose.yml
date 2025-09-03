@@ -93,6 +93,7 @@ services:
 networks:
   portfolio-network:
     driver: bridge
+    name: portfolio-network
 
 volumes:
   mongo_data:

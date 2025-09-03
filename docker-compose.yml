@@ -28,7 +28,7 @@ services:
       - "traefik.http.middlewares.auth.basicauth.users=admin:$$apr1$$hG9dpSzk$$d/czKXcpEf8w.KvZgTnps0"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
-      - "./letsencrypt:/letsencrypt"
+      - "./letsencrypt:/letsencrypt:Z"
     networks:
       - portfolio-network
 

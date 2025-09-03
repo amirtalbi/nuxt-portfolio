@@ -28,7 +28,7 @@
         <div class="flex flex-col items-center gap-4 animate-fade-in">
           <div class="flex gap-4">
             <NuxtLink
-              to="https://www.linkedin.com/in/amir-talbi"
+              to="https://www.linkedin.com/in/amirtalbi"
               target="_blank"
               external
               class="flex gap-2 items-center justify-center min-h-10 min-w-10 2xl:min-h-14 2xl:min-w-14 rounded-full border-2 border-gray-500 hover:border-primary transition duration-300"
@@ -73,8 +73,8 @@
           </div>
 
           <div class="flex flex-col gap-2">
-            <NuxtLink
-              to="#projects"
+            <a
+              href="#projects"
               class="flex gap-2 items-center justify-center px-4 2xl:px-6 min-h-10 min-w-10 2xl:min-h-14 2xl:min-w-14 rounded-full border-2 border-gray-500 hover:border-primary transition duration-300"
             >
               <span
@@ -86,10 +86,10 @@
                 name="fa:angle-down"
                 class="text-gray-300 text-lg 2xl:text-2xl"
               />
-            </NuxtLink>
+            </a>
 
-            <NuxtLink
-              to="#skills"
+            <a
+              href="#skills"
               class="flex gap-2 items-center justify-center px-4 2xl:px-6 min-h-10 min-w-10 2xl:min-h-14 2xl:min-w-14 rounded-full border-2 border-gray-500 hover:border-primary transition duration-300"
             >
               <span
@@ -101,7 +101,7 @@
                 name="fa:angle-down"
                 class="text-gray-300 text-lg 2xl:text-2xl"
               />
-            </NuxtLink>
+            </a>
           </div>
         </div>
       </div>
@@ -289,7 +289,7 @@
         </p>
         <div class="flex gap-4">
           <NuxtLink
-            to="https://www.linkedin.com/in/amir-talbi"
+            to="https://www.linkedin.com/in/amirtalbi"
             target="_blank"
             external
             class="flex gap-2 items-center justify-center min-h-10 min-w-10 2xl:min-h-14 2xl:min-w-14 rounded-full border-2 border-gray-500 hover:border-primary transition duration-300"

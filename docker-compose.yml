@@ -25,7 +25,7 @@ services:
       - "traefik.http.routers.dashboard.tls.certresolver=letsresolver"
       - "traefik.http.routers.dashboard.service=api@internal"
       - "traefik.http.routers.dashboard.middlewares=auth"
-      - "traefik.http.middlewares.auth.basicauth.users=admin:$$apr1$$Phe9uh4t$$YUc2w9.EpcjA1yifs80qW0"
+      - "traefik.http.middlewares.auth.basicauth.users=admin:$apr1$hG9dpSzk$d/czKXcpEf8w.KvZgTnps0"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "./letsencrypt:/letsencrypt"

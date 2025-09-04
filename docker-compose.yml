@@ -14,6 +14,7 @@ services:
       - "--certificatesresolvers.letsresolver.acme.email=amirotalbi94@gmail.com"
       - "--certificatesresolvers.letsresolver.acme.storage=/letsencrypt/acme.json"
       - "--certificatesresolvers.letsresolver.acme.httpchallenge.entrypoint=web"
+      - "--log.level=DEBUG"
     ports:
       - "80:80"
       - "443:443"

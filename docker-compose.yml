@@ -72,17 +72,10 @@ services:
     platform: linux/amd64
     labels:
       - "traefik.enable=true"
-      # Router HTTPS
       - "traefik.http.routers.govtc.rule=Host(`go-vtc.amirtalbi.me`)"
-      - "traefik.http.routers.govtc.entrypoints=websecure"
+      - "traefik.http.routers.govtc.entrypoints=web,websecure"
       - "traefik.http.routers.govtc.tls.certresolver=letsresolver"
       - "traefik.http.services.govtc.loadbalancer.server.port=3000"
-      # Router HTTP avec redirection vers HTTPS
-      - "traefik.http.routers.govtc-http.rule=Host(`go-vtc.amirtalbi.me`)"
-      - "traefik.http.routers.govtc-http.entrypoints=web"
-      - "traefik.http.routers.govtc-http.middlewares=redirect-to-https"
-      - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
-      - "traefik.http.services.govtc.loadbalancer.healthcheck=false"
     expose:
       - "3000"
     environment:

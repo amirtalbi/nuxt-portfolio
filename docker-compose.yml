@@ -92,6 +92,21 @@ services:
       timeout: 5s
       retries: 3
 
+  morpion:
+    image: ghcr.io/amirtalbi/morpion-portfolio:1.0.0
+    container_name: morpion
+    platform: linux/amd64
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.morpion.rule=Host(`morpion.amirtalbi.me`)"
+      - "traefik.http.routers.morpion.entrypoints=web,websecure"
+      - "traefik.http.routers.morpion.tls.certresolver=letsresolver"
+      - "traefik.http.services.morpion.loadbalancer.server.port=3000"
+    expose:
+      - "3000"
+    networks:
+      - portfolio-network
+
 
 networks:
   portfolio-network:

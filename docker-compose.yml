@@ -92,21 +92,35 @@ services:
       timeout: 5s
       retries: 3
 
-  morpion:
-    image: ghcr.io/amirtalbi/morpion-portfolio:1.0.0
-    container_name: morpion
+  morpion-back:
+    image: ghcr.io/amirtalbi/morpion-back-portfolio:1.0.0
+    container_name: morpion-back
     platform: linux/amd64
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.morpion.rule=Host(`morpion.amirtalbi.me`)"
-      - "traefik.http.routers.morpion.entrypoints=web,websecure"
-      - "traefik.http.routers.morpion.tls.certresolver=letsresolver"
-      - "traefik.http.services.morpion.loadbalancer.server.port=3000"
+      - "traefik.http.routers.morpion-back.rule=Host(`morpion-back.amirtalbi.me`)"
+      - "traefik.http.routers.morpion-back.entrypoints=web,websecure"
+      - "traefik.http.routers.morpion-back.tls.certresolver=letsresolver"
+      - "traefik.http.services.morpion-back.loadbalancer.server.port=3001"
+    expose:
+      - "3001"
+    networks:
+      - portfolio-network
+
+  morpion-front:
+    image: ghcr.io/amirtalbi/morpion-front-portfolio:1.0.0
+    container_name: morpion-front
+    platform: linux/amd64
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.morpion-front.rule=Host(`morpion-front.amirtalbi.me`)"
+      - "traefik.http.routers.morpion-front.entrypoints=web,websecure"
+      - "traefik.http.routers.morpion-front.tls.certresolver=letsresolver"
+      - "traefik.http.services.morpion-front.loadbalancer.server.port=3000"
     expose:
       - "3000"
     networks:
       - portfolio-network
-
 
 networks:
   portfolio-network:

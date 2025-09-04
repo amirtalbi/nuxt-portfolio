@@ -72,10 +72,10 @@ services:
     platform: linux/amd64
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.govtc.rule=Host(`go-vtc.amirtalbi.me`)"
       - "traefik.http.routers.govtc.entrypoints=web,websecure"
       - "traefik.http.routers.govtc.tls.certresolver=letsresolver"
       - "traefik.http.services.govtc.loadbalancer.server.port=3000"
+      - "traefik.http.routers.govtc.rule=Host(`go-vtc.amirtalbi.me`)"
     expose:
       - "3000"
     environment:
@@ -87,10 +87,11 @@ services:
       - portfolio-network
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/api"]
+      test: ["CMD", "nc", "-z", "localhost", "3000"]
       interval: 30s
       timeout: 5s
       retries: 3
+
 
 networks:
   portfolio-network:

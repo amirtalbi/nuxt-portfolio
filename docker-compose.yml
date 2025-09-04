@@ -82,6 +82,7 @@ services:
       - "traefik.http.routers.govtc-http.entrypoints=web"
       - "traefik.http.routers.govtc-http.middlewares=redirect-to-https"
       - "traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https"
+      - "traefik.http.services.govtc.loadbalancer.healthcheck=false"
     expose:
       - "3000"
     environment:

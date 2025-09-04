@@ -122,9 +122,6 @@ services:
     networks:
       - portfolio-network
 
-  morpion:
-    image: ghcr.io/amirtalbi/morpion-portfolio:1.0.0
-
 networks:
   portfolio-network:
     driver: bridge

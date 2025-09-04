@@ -44,8 +44,6 @@ services:
       - "traefik.http.services.frontend.loadbalancer.server.port=3000"
     expose:
       - "3000"
-    depends_on:
-      - traefik
     networks:
       - portfolio-network
 
@@ -73,10 +71,12 @@ services:
     platform: linux/amd64
     labels:
       - "traefik.enable=true"
+      # Router HTTPS
       - "traefik.http.routers.govtc.rule=Host(`go-vtc.amirtalbi.me`)"
       - "traefik.http.routers.govtc.entrypoints=websecure"
       - "traefik.http.routers.govtc.tls.certresolver=letsresolver"
       - "traefik.http.services.govtc.loadbalancer.server.port=3000"
+      # Router HTTP avec redirection vers HTTPS
       - "traefik.http.routers.govtc-http.rule=Host(`go-vtc.amirtalbi.me`)"
       - "traefik.http.routers.govtc-http.entrypoints=web"
       - "traefik.http.routers.govtc-http.middlewares=redirect-to-https"
@@ -88,7 +88,6 @@ services:
       - NODE_ENV=production
     depends_on:
       - mongo
-      - traefik
     networks:
       - portfolio-network
     restart: unless-stopped

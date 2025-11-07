@@ -549,6 +549,15 @@ const projects = ref([
     finished: false,
   },
   {
+    name: "TripLegal",
+    title: "La plateforme juridique pour les chauffeurs VTC",
+    description: "TripLegal est une plateforme dédiée aux chauffeurs VTC, leur permettant de générer des bons de commandes, de recevoir des paiements et d'être légalement aptes à recevoir des clients sans passer par des plateformes.",
+    image: "",
+    technologies: ["Nuxt.js", "NestJS", "Postgres", "Tailwind CSS"],
+    link: "https://triplegal.fr",
+    finished: true,
+  },
+  {
     name: "GoVTC API",
     title: "API complète pour plateforme de transport VTC",
     description:

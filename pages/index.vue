@@ -1,214 +1,164 @@
 <template>
-  <div class="w-full min-h-screen">
+  <div class="w-full min-h-screen bg-black text-white">
     <section
-      class="min-h-screen px-8 md:px-12 flex flex-col justify-center gap-6 md:gap-12 lg:gap-16 2xl:gap-32 container mx-auto"
+      id="hero"
+      class="min-h-screen px-6 sm:px-10 lg:px-16 xl:px-20 py-16 flex flex-col justify-center gap-10 container mx-auto"
     >
-      <div>
-        <div class="flex flex-col items-center text-center gap-4">
-          <h3
-            class="text-2xl sm:text-3xl md:text-4xl 2xl:text-2xl font-medium text-gray-300 animate-fade-in"
+      <div class="space-y-6 max-w-4xl">
+        <p class="text-sm uppercase tracking-[0.4em] text-primary">Amir Talbi · Développeur Full Stack</p>
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight">
+          Je livre des applications full-stack scalables en production
+          en moins de 2 semaines — frontend, backend, infra, CI/CD.
+        </h1>
+        <p class="text-lg sm:text-xl text-gray-300 leading-relaxed">
+          Je conçois, développe et maintiens des plateformes qui réduisent les coûts opérationnels, améliorent
+          la productivité des équipes métier et renforcent la confiance des utilisateurs grâce à une expérience
+          fluide et sécurisée.
+        </p>
+        <div class="flex flex-wrap gap-3">
+          <a
+            href="#contact"
+            class="px-6 py-3 bg-primary text-black font-semibold rounded-full hover:bg-primary/90 transition"
           >
-            Bonjour, je suis Amir !
-          </h3>
-          <h2
-            class="text-5xl sm:text-7xl md:text-8xl xl:text-9xl 2xl:text-9xl font-bold animate-fade-in"
+            Me contacter
+          </a>
+          <a
+            href="https://github.com/amirtalbi"
+            target="_blank"
+            rel="noopener"
+            class="px-6 py-3 border border-gray-600 rounded-full hover:border-primary transition"
           >
-            Développeur
-          </h2>
-          <h2
-            class="text-6xl sm:text-8xl md:text-9xl xl:text-[10rem] 2xl:text-[11rem] font-bold flex flex-wrap justify-center gap-2 animate-fade-in"
+            Voir GitHub
+          </a>
+          <button
+            @click="openCvModal"
+            class="px-6 py-3 border border-gray-600 rounded-full hover:border-primary transition"
           >
-            <span class="mr-2 md:mr-8 text-primary italic">full</span>stack
-          </h2>
+            Télécharger mon CV
+          </button>
         </div>
-      </div>
-      <div
-        class="flex flex-col items-center text-center lg:flex-row-reverse lg:items-center lg:justify-between space-between gap-14"
-      >
-        <div class="flex flex-col items-center gap-4 animate-fade-in">
-          <div class="flex gap-4">
-            <NuxtLink
-              to="https://www.linkedin.com/in/amirtalbi"
-              target="_blank"
-              external
-              class="flex gap-2 items-center justify-center min-h-10 min-w-10 2xl:min-h-14 2xl:min-w-14 rounded-full border-2 border-gray-500 hover:border-primary transition duration-300"
-            >
-              <Icon
-                name="fa:linkedin"
-                class="text-gray-300 text-lg 2xl:text-2xl"
-              />
-            </NuxtLink>
-
-            <NuxtLink
-              to="https://github.com/amirtalbi"
-              target="_blank"
-              external
-              class="flex gap-2 items-center justify-center min-h-10 min-w-10 2xl:min-h-14 2xl:min-w-14 rounded-full border-2 border-gray-500 hover:border-primary transition duration-300"
-            >
-              <Icon
-                name="fa:github"
-                class="text-gray-300 text-lg 2xl:text-2xl"
-              />
-            </NuxtLink>
-
-            <NuxtLink
-              to="mailto:amir.talbi@example.com"
-              class="flex gap-2 items-center justify-center min-h-10 min-w-10 2xl:min-h-14 2xl:min-w-14 rounded-full border-2 border-gray-500 hover:border-primary transition duration-300"
-            >
-              <Icon
-                name="fa:envelope"
-                class="text-gray-300 text-lg 2xl:text-2xl"
-              />
-            </NuxtLink>
-
-            <button
-              @click="openCvModal"
-              class="flex gap-2 items-center justify-center min-h-10 min-w-10 2xl:min-h-14 2xl:min-w-14 rounded-full border-2 border-gray-500 hover:border-primary transition duration-300 cursor-pointer"
-            >
-              <span
-                class="uppercase font-semibold text-sm xl:text-md 2xl:text-xl text-gray-300"
-                >CV</span
-              >
-            </button>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div class="border border-gray-800 bg-white/5 rounded-2xl p-3">
+            <p class="text-3xl font-bold text-primary">10+</p>
+            <p class="text-xs text-gray-400 uppercase tracking-[0.2em]">Plateformes livrées</p>
           </div>
-
-          <div class="flex flex-col gap-2">
-            <a
-              href="#projects"
-              class="flex gap-2 items-center justify-center px-4 2xl:px-6 min-h-10 min-w-10 2xl:min-h-14 2xl:min-w-14 rounded-full border-2 border-gray-500 hover:border-primary transition duration-300"
-            >
-              <span
-                class="uppercase font-semibold text-sm xl:text-md 2xl:text-xl text-gray-300"
-              >
-                mes projets
-              </span>
-              <Icon
-                name="fa:angle-down"
-                class="text-gray-300 text-lg 2xl:text-2xl"
-              />
-            </a>
-
-            <a
-              href="#skills"
-              class="flex gap-2 items-center justify-center px-4 2xl:px-6 min-h-10 min-w-10 2xl:min-h-14 2xl:min-w-14 rounded-full border-2 border-gray-500 hover:border-primary transition duration-300"
-            >
-              <span
-                class="uppercase font-semibold text-sm xl:text-md 2xl:text-xl text-gray-300"
-              >
-                mes compétences
-              </span>
-              <Icon
-                name="fa:angle-down"
-                class="text-gray-300 text-lg 2xl:text-2xl"
-              />
-            </a>
+          <div class="border border-gray-800 bg-white/5 rounded-2xl p-3">
+            <p class="text-3xl font-bold text-primary">3x</p>
+            <p class="text-xs text-gray-400 uppercase tracking-[0.2em]">Temps de mise en prod ramené</p>
+          </div>
+          <div class="border border-gray-800 bg-white/5 rounded-2xl p-3">
+            <p class="text-3xl font-bold text-primary">Temps réel</p>
+            <p class="text-xs text-gray-400 uppercase tracking-[0.2em]">Notifications & WebSockets</p>
+          </div>
+          <div class="border border-gray-800 bg-white/5 rounded-2xl p-3">
+            <p class="text-3xl font-bold text-primary">Full stack</p>
+            <p class="text-xs text-gray-400 uppercase tracking-[0.2em]">Apps, APIs, Infra</p>
           </div>
         </div>
       </div>
     </section>
 
     <section
-      class="min-h-screen w-full md:w-5/6 px-4 sm:px-8 md:px-12 flex flex-col justify-center gap-6 md:gap-12 lg:gap-16 2xl:gap-32 container mx-auto pb-12"
+      id="about"
+      class="px-6 sm:px-10 lg:px-16 xl:px-20 py-16 border-t border-gray-800 bg-gradient-to-b from-black/80 to-black/60"
     >
-      <div>
-        <h1
-          id="projects"
-          class="text-xl sm:text-2xl md:text-3xl 2xl:text-5xl font-medium text-gray-300 mb-8 2xl:mb-16 animate-fade-in"
-        >
-          Mes projets
-        </h1>
+      <div class="max-w-5xl mx-auto grid gap-10 lg:grid-cols-[1fr_1.2fr] items-center">
+        <div>
+          <p class="text-xs uppercase tracking-[0.4em] text-primary">À propos</p>
+          <h2 class="text-3xl sm:text-4xl font-semibold text-white mt-4">Créateur de produits numériques fiables & adaptables</h2>
+          <p class="mt-4 text-gray-300 leading-relaxed">
+            Je travaille avec des équipes produit et des entrepreneurs pour transformer un besoin métier en
+            architecture robuste, API performante, interface fluide et pipeline déployable. Je privilégie la
+            communication claire dans les spec, la documentation automatique et les tests end-to-end.
+          </p>
+          <p class="mt-4 text-sm text-gray-400">
+            Recherche : CDI full-stack, mission freelance ou collaboration concrète avec les CTOs qui veulent
+            déléguer la pile complète (frontend, backend, sécurité, observabilité).
+          </p>
+        </div>
+        <div class="grid gap-4">
+          <div class="p-6 border border-gray-800 bg-white/5 rounded-2xl shadow-lg">
+            <p class="text-sm uppercase tracking-[0.3em] text-gray-400">Focus actuel</p>
+            <p class="text-lg sm:text-xl text-white font-semibold mt-2">Produits SaaS en compliance légale (VTC, mobilité, fintech).</p>
+          </div>
+          <div class="p-6 border border-gray-800 bg-white/5 rounded-2xl shadow-lg">
+            <p class="text-sm uppercase tracking-[0.3em] text-gray-400">Expertise</p>
+            <p class="text-lg sm:text-xl text-white font-semibold mt-2">Frontend moderne, API modulaires et pipelines Docker + Traefik.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        <div class="grid gap-8 md:gap-12">
+    <section
+      id="projects"
+      class="px-6 sm:px-10 lg:px-16 xl:px-20 py-16"
+    >
+      <div class="max-w-5xl mx-auto">
+        <p class="text-xs uppercase tracking-[0.4em] text-primary">Projets</p>
+        <h2 class="text-3xl sm:text-4xl font-semibold text-white mt-4">3 projets qui démontrent mon impact</h2>
+        <p class="text-gray-400 mt-2">Front, back-office, API, DevOps — chaque projet est accompagné d’un rôle clair, d’un enjeu et d’un résultat mesurable.</p>
+
+        <div class="grid gap-8 mt-10">
           <UCard
-            v-for="(project, index) in projects"
-            :key="index"
-            class="w-full bg-gray-800/50 border border-gray-700/50 rounded-2xl shadow-2xl backdrop-blur-sm hover:shadow-primary/10 hover:border-primary/30 transition-all duration-300 overflow-hidden group"
+            v-for="project in featuredProjects"
+            :key="project.name"
+            class="bg-gray-900/50 border border-gray-800 rounded-3xl shadow-2xl"
           >
-            <div class="p-4 sm:p-6 md:p-8">
-              <div
-                class="flex flex-col gap-6 sm:gap-8 lg:flex-row lg:gap-8 items-start"
-              >
-                <!-- Image placeholder ou vraie image -->
-                <div class="flex-shrink-0 w-full max-w-full lg:w-80 xl:w-96">
-                  <div
-                    v-if="!project.image"
-                    class="w-full h-48 sm:h-64 md:h-80 bg-gradient-to-br from-primary/20 to-orange-500/20 rounded-xl flex items-center justify-center"
-                  >
-                    <Icon
-                      name="fa:code"
-                      class="text-5xl sm:text-6xl text-gray-400"
-                    />
-                  </div>
-                  <img
-                    v-else
-                    :src="project.image"
-                    :alt="project.name"
-                    class="w-full h-48 sm:h-64 md:h-80 object-cover rounded-xl shadow-lg"
-                    loading="lazy"
-                  />
-                </div>
-
-                <!-- Contenu -->
-                <div
-                  class="flex-1 max-w-full xl:max-w-2xl space-y-3 sm:space-y-4"
+            <div class="p-6 lg:p-10 space-y-5">
+              <div class="flex flex-wrap items-center gap-3">
+                <h3 class="text-2xl font-bold text-white">{{ project.name }}</h3>
+                <span
+                  :class="project.status === 'Live' ? 'bg-green-500/10 text-green-400 border-green-500/20' : 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20'"
+                  class="px-3 py-1 text-xs font-medium rounded-full border"
                 >
-                  <div class="space-y-1 sm:space-y-2">
-                    <div
-                      class="flex flex-wrap items-center gap-2 sm:gap-3 mb-2"
-                    >
-                      <h2
-                        class="text-xl sm:text-2xl md:text-3xl font-bold text-white group-hover:text-primary transition-colors duration-300 break-words"
-                      >
-                        {{ project.name }}
-                      </h2>
-                      <!-- Statut du projet -->
-                      <span
-                        :class="
-                          project.finished
-                            ? 'bg-green-500/10 text-green-400 border-green-500/20'
-                            : 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20'
-                        "
-                        class="px-2 py-1 text-xs font-medium rounded-full border whitespace-nowrap"
-                      >
-                        {{ project.finished ? "Terminé" : "En cours" }}
-                      </span>
-                    </div>
-                    <h3
-                      class="text-base sm:text-lg md:text-xl text-primary font-medium break-words"
-                    >
-                      {{ project.title }}
-                    </h3>
-                  </div>
-
-                  <p
-                    class="text-gray-300 leading-relaxed text-sm sm:text-base md:text-lg break-words"
-                  >
-                    {{ project.description }}
-                  </p>
-
-                  <!-- Technologies -->
-                  <div class="flex flex-wrap gap-2 pt-2 sm:pt-4">
-                    <span
-                      v-for="tech in project.technologies"
-                      :key="tech"
-                      class="px-2 py-1 sm:px-3 sm:py-1 bg-primary/10 text-primary border border-primary/20 rounded-full text-xs sm:text-sm font-medium"
-                    >
-                      {{ tech }}
-                    </span>
-                  </div>
-
-                  <!-- Link (si disponible) -->
-                  <div v-if="project.link" class="pt-2 sm:pt-4">
-                    <NuxtLink
-                      :to="project.link"
-                      target="_blank"
-                      class="inline-flex items-center gap-2 px-4 sm:px-6 py-2 sm:py-3 bg-primary hover:bg-primary/80 text-white font-medium rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-primary/25 w-full sm:w-auto text-center justify-center"
-                    >
-                      Voir le projet
-                      <Icon name="fa:external-link" class="text-sm" />
-                    </NuxtLink>
-                  </div>
+                  {{ project.status }}
+                </span>
+              </div>
+              <p class="text-lg text-primary font-medium">{{ project.title }}</p>
+              <p class="text-gray-300 leading-relaxed">{{ project.description }}</p>
+              <div class="grid gap-4 md:grid-cols-3">
+                <div>
+                  <p class="text-xs uppercase tracking-[0.3em] text-gray-400">Enjeu</p>
+                  <p class="text-white font-semibold text-sm">{{ project.challenge }}</p>
                 </div>
+                <div>
+                  <p class="text-xs uppercase tracking-[0.3em] text-gray-400">Rôle</p>
+                  <p class="text-white font-semibold text-sm">{{ project.role }}</p>
+                </div>
+                <div v-if="project.impact != null">
+                  <p class="text-xs uppercase tracking-[0.3em] text-gray-400">Impact</p>
+                  <p class="text-white font-semibold text-sm">{{ project.impact }}</p>
+                </div>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <span
+                  v-for="tech in project.technologies"
+                  :key="tech"
+                  class="px-3 py-1 rounded-full border border-gray-800 text-xs text-gray-300 bg-white/5"
+                >
+                  {{ tech }}
+                </span>
+              </div>
+              <div class="flex flex-wrap gap-3">
+                <a
+                  v-if="project.link"
+                  :href="project.link"
+                  target="_blank"
+                  rel="noopener"
+                  class="px-5 py-2 rounded-full bg-primary text-black font-semibold hover:bg-primary/90 transition"
+                >
+                  Voir le projet
+                </a>
+                <a
+                  v-if="project.repo"
+                  :href="project.repo"
+                  target="_blank"
+                  rel="noopener"
+                  class="px-5 py-2 rounded-full border border-gray-700 text-gray-200 hover:border-primary transition"
+                >
+                  Voir le code
+                </a>
+                <p v-if="project.metrics" class="text-xs uppercase tracking-[0.3em] text-gray-500">{{ project.metrics }}</p>
               </div>
             </div>
           </UCard>
@@ -217,44 +167,106 @@
     </section>
 
     <section
-      id="skills"
-      class="min-h-screen px-8 md:px-12 flex flex-col justify-center gap-6 md:gap-12 lg:gap-16 2xl:gap-32 container mx-auto"
+      class="px-6 sm:px-10 lg:px-16 xl:px-20 pb-16"
     >
-      <div>
-        <h1
-          class="text-xl sm:text-2xl md:text-3xl 2xl:text-5xl font-medium text-gray-300 mb-8 2xl:mb-16 animate-fade-in"
-        >
-          Mes compétences
-        </h1>
+      <div class="max-w-5xl mx-auto">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <p class="text-xs uppercase tracking-[0.4em] text-primary">Autres réalisations</p>
+            <h2 class="text-3xl sm:text-4xl font-semibold text-white mt-2">Archive & projets annexes</h2>
+            <p class="text-gray-400 mt-1">Projets qui complètent la palette technique sans surcharger la homepage.</p>
+          </div>
+          <a
+            href="#contact"
+            class="px-5 py-2 rounded-full border border-gray-700 text-gray-200 hover:border-primary transition"
+          >
+            Discuter d’un projet
+          </a>
+        </div>
+        <div class="grid gap-4 md:grid-cols-2">
+          <div
+            v-for="project in otherProjects"
+            :key="project.name"
+            class="border border-gray-800 rounded-2xl p-5 bg-gray-900/50"
+          >
+            <div class="flex items-center justify-between">
+              <h3 class="text-xl font-semibold text-white">{{ project.name }}</h3>
+              <span class="text-xs uppercase tracking-[0.3em] text-gray-400">{{ project.status }}</span>
+            </div>
+            <p class="mt-2 text-gray-300 text-sm leading-relaxed">{{ project.summary }}</p>
+            <p class="mt-3 text-xs text-gray-400 uppercase tracking-[0.3em]">Stack principale</p>
+            <div class="flex flex-wrap gap-2 mt-1">
+              <span
+                v-for="tech in project.technologies"
+                :key="tech"
+                class="px-3 py-1 rounded-full border border-gray-800 text-xs text-gray-300"
+              >
+                {{ tech }}
+              </span>
+            </div>
+            <div class="flex flex-wrap gap-3 mt-4">
+              <a
+                v-if="project.link"
+                :href="project.link"
+                target="_blank"
+                rel="noopener"
+                class="text-sm font-semibold text-primary hover:text-primary/70"
+              >
+                Lien live
+              </a>
+              <a
+                v-if="project.repo"
+                :href="project.repo"
+                target="_blank"
+                rel="noopener"
+                class="text-sm font-semibold text-primary hover:text-primary/70"
+              >
+                Voir le code
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+    <section
+      id="skills"
+      class="px-6 sm:px-10 lg:px-16 xl:px-20 py-16 border-t border-gray-800"
+    >
+      <div class="max-w-5xl mx-auto">
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-10">
+          <div>
+            <p class="text-xs uppercase tracking-[0.4em] text-primary">Compétences</p>
+            <h2 class="text-3xl sm:text-4xl font-semibold text-white mt-2">Stack techniques maîtrisées</h2>
+            <p class="text-gray-400 mt-1">Frontend, backend, DevOps et bases de données : tout ce qu’il faut pour une stack complète.</p>
+          </div>
+          <a
+            href="mailto:amirotalbi94@gmail.com"
+            class="px-5 py-2 rounded-full border border-gray-700 text-gray-200 hover:border-primary transition"
+          >
+            Discutons tech
+          </a>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <UCard
             v-for="(skillCategory, index) in skills"
             :key="index"
-            class="bg-gray-800/50 border border-gray-700/50 rounded-xl shadow-xl backdrop-blur-sm hover:shadow-primary/10 hover:border-primary/30 transition-all duration-300 overflow-hidden group"
+            class="bg-gray-900/50 border border-gray-800 rounded-2xl shadow-xl"
           >
-            <div class="p-6">
-              <!-- Header avec icône et titre -->
-              <div class="flex items-center gap-4 mb-6">
+            <div class="p-6 space-y-4">
+              <div class="flex items-center gap-3">
                 <div
-                  :class="`bg-gradient-to-r ${skillCategory.color}`"
-                  class="w-12 h-12 rounded-lg flex items-center justify-center shadow-lg"
+                  :class="`w-12 h-12 rounded-xl flex items-center justify-center shadow-lg bg-gradient-to-br ${skillCategory.color}`"
                 >
                   <Icon :name="skillCategory.icon" class="text-white text-xl" />
                 </div>
-                <h3
-                  class="text-xl font-bold text-white group-hover:text-primary transition-colors duration-300"
-                >
-                  {{ skillCategory.category }}
-                </h3>
+                <h3 class="text-xl font-semibold text-white">{{ skillCategory.category }}</h3>
               </div>
-
-              <!-- Liste des compétences -->
               <div class="flex flex-wrap gap-2">
                 <span
                   v-for="skill in skillCategory.skills"
                   :key="skill"
-                  class="px-3 py-1.5 bg-gray-700/50 text-gray-300 border border-gray-600/50 rounded-lg text-sm font-medium hover:bg-primary/10 hover:text-primary hover:border-primary/20 transition-all duration-200"
+                  class="px-3 py-1.5 rounded-full border border-gray-800 text-sm text-gray-300"
                 >
                   {{ skill }}
                 </span>
@@ -265,74 +277,70 @@
       </div>
     </section>
 
-
-
-    <!-- Footer -->
-    <footer
-      class="py-8 px-8 md:px-12 border-t border-gray-700/50 bg-gray-900/50"
+    <section
+      id="contact"
+      class="px-6 sm:px-10 lg:px-16 xl:px-20 py-16 bg-gradient-to-t from-black/80 to-transparent"
     >
-      <div
-        class="container flex flex-col md:flex-row items-center justify-between gap-6 mx-auto"
-      >
-        <p class="text-gray-400 text-sm md:text-base">
-          Made with <span class="text-red-500 animate-pulse">❤️</span> by
-          <NuxtLink
-            to="https://webinnov-paris.fr/"
-            target="_blank"
-            external
-            class="text-primary hover:text-primary/80 font-medium transition-colors duration-300"
-          >
-            Webinnov Paris
-          </NuxtLink>
-          aka
-          <span class="text-white font-medium">Amir Talbi</span>
-        </p>
-        <div class="flex gap-4">
-          <NuxtLink
-            to="https://www.linkedin.com/in/amirtalbi"
-            target="_blank"
-            external
-            class="flex gap-2 items-center justify-center min-h-10 min-w-10 2xl:min-h-14 2xl:min-w-14 rounded-full border-2 border-gray-500 hover:border-primary transition duration-300"
-          >
-            <Icon
-              name="fa:linkedin"
-              class="text-gray-300 text-lg 2xl:text-2xl"
-            />
-          </NuxtLink>
-
-          <NuxtLink
-            to="https://github.com/amirtalbi"
-            target="_blank"
-            external
-            class="flex gap-2 items-center justify-center min-h-10 min-w-10 2xl:min-h-14 2xl:min-w-14 rounded-full border-2 border-gray-500 hover:border-primary transition duration-300"
-          >
-            <Icon name="fa:github" class="text-gray-300 text-lg 2xl:text-2xl" />
-          </NuxtLink>
-
-          <NuxtLink
-            to="mailto:amir.talbi@example.com"
-            class="flex gap-2 items-center justify-center min-h-10 min-w-10 2xl:min-h-14 2xl:min-w-14 rounded-full border-2 border-gray-500 hover:border-primary transition duration-300"
-          >
-            <Icon
-              name="fa:envelope"
-              class="text-gray-300 text-lg 2xl:text-2xl"
-            />
-          </NuxtLink>
-
-          <button
-            @click="openCvModal"
-            class="flex gap-2 items-center justify-center min-h-10 min-w-10 2xl:min-h-14 2xl:min-w-14 rounded-full border-2 border-gray-500 hover:border-primary transition duration-300 cursor-pointer"
-          >
-            <span
-              class="uppercase font-semibold text-sm xl:text-md 2xl:text-xl text-gray-300"
-              >CV</span
+      <div class="max-w-5xl mx-auto border border-gray-800 rounded-3xl p-10 bg-white/5 shadow-2xl">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+          <div>
+            <p class="text-xs uppercase tracking-[0.4em] text-primary">Contact</p>
+            <h2 class="text-3xl sm:text-4xl font-semibold text-white mt-3">Prêt pour une collaboration concrète ?</h2>
+            <p class="text-gray-300 mt-2">Je réponds rapidement aux missions full stack, au consulting infrastructure et aux renforts DevOps.</p>
+          </div>
+          <div class="space-y-2">
+            <a
+              href="mailto:amirotalbi94@gmail.com"
+              class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primary text-black font-semibold"
             >
-          </button>
+              <Icon name="fa:envelope" />
+              Envoyer un message
+            </a>
+            <div class="flex gap-3">
+              <a
+                href="https://www.linkedin.com/in/amirtalbi"
+                target="_blank"
+                rel="noopener"
+                class="px-4 py-2 border border-gray-700 rounded-full hover:border-primary transition"
+              >
+                LinkedIn
+              </a>
+              <a
+                href="https://github.com/amirtalbi"
+                target="_blank"
+                rel="noopener"
+                class="px-4 py-2 border border-gray-700 rounded-full hover:border-primary transition"
+              >
+                GitHub
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="mt-8 text-sm text-gray-400 grid gap-2 sm:grid-cols-2">
+          <p>Disponible pour CDI, freelance ou missions à distance. Localisé à Paris et disponible pour déplacements courts.</p>
+          <p>CV & stack à jour : <button @click="openCvModal" class="text-primary underline">ouvrir le CV</button></p>
+        </div>
+      </div>
+    </section>
+
+    <footer
+      class="py-8 px-6 sm:px-10 border-t border-gray-800 text-gray-400"
+    >
+      <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+        <p>© {{ new Date().getFullYear() }} Amir Talbi — Full Stack Developer</p>
+        <div class="flex gap-4">
+          <NuxtLink to="https://www.linkedin.com/in/amirtalbi" target="_blank" external>
+            LinkedIn
+          </NuxtLink>
+          <NuxtLink to="https://github.com/amirtalbi" target="_blank" external>
+            GitHub
+          </NuxtLink>
+          <NuxtLink to="/amir-talbi-cv.pdf" target="_blank">
+            CV</NuxtLink>
         </div>
       </div>
     </footer>
 
-    <!-- Modale CV Custom -->
     <Teleport to="body" v-if="showCvModal">
       <div
         class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
@@ -342,129 +350,59 @@
           class="bg-gray-900 rounded-2xl overflow-hidden max-w-6xl w-full max-h-[95vh] md:max-h-[90vh] overflow-y-auto"
           @click.stop
         >
-          <!-- Header de la modale -->
-          <div
-            class="flex items-center justify-between p-4 md:p-6 border-b border-gray-700"
-          >
+          <div class="flex items-center justify-between p-4 md:p-6 border-b border-gray-700">
             <div class="flex items-center gap-3">
-              <div
-                class="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-r from-primary to-orange-500 rounded-lg flex items-center justify-center"
-              >
-                <Icon
-                  name="fa:file-pdf-o"
-                  class="text-white text-sm md:text-lg"
-                />
+              <div class="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-r from-primary to-orange-500 rounded-lg flex items-center justify-center">
+                <Icon name="fa:file-pdf-o" class="text-white text-sm md:text-lg" />
               </div>
               <div>
-                <h3 class="text-lg md:text-xl font-bold text-white">
-                  Curriculum Vitae
-                </h3>
-                <p class="text-xs md:text-sm text-gray-400">
-                  Amir Talbi - Développeur Full Stack
-                </p>
+                <h3 class="text-lg md:text-xl font-bold text-white">Curriculum Vitae</h3>
+                <p class="text-xs md:text-sm text-gray-400">Amir Talbi - Développeur Full Stack</p>
               </div>
             </div>
             <button
               @click="closeCvModal"
-              class="w-8 h-8 rounded-full bg-gray-800 hover:bg-gray-700 flex items-center justify-center transition-colors duration-200 cursor-pointer"
+              class="w-8 h-8 rounded-full bg-gray-800 hover:bg-gray-700 flex items-center justify-center"
             >
               <Icon name="fa:times" class="text-gray-400 hover:text-white" />
             </button>
           </div>
-
-          <!-- Contenu de la modale -->
           <div class="p-4 md:p-6">
-            <!-- Aperçu du CV ou fallback mobile -->
-            <div
-              v-if="isMobile"
-              class="bg-gray-800/50 rounded-xl p-4 mb-4 md:mb-6 flex flex-col items-center justify-center"
-            >
+            <div v-if="isMobile" class="bg-gray-800/50 rounded-xl p-4 mb-4 md:mb-6 flex flex-col items-center justify-center">
               <Icon name="fa:file-pdf-o" class="text-4xl text-red-500 mb-2" />
-              <p class="text-base font-medium mb-2 text-center">
-                Aperçu du CV non supporté sur mobile.
-              </p>
-              <a
-                href="/amir-talbi-cv.pdf"
-                target="_blank"
-                class="px-4 py-2 bg-primary hover:bg-primary/80 text-white rounded-lg font-medium transition-all duration-200 hover:shadow-lg hover:shadow-primary/25 cursor-pointer flex items-center justify-center gap-2 text-sm md:text-base mb-2"
-              >
-                <Icon name="fa:external-link" />
-                Ouvrir dans un nouvel onglet
-              </a>
-              <a
-                href="/amir-talbi-cv.pdf"
-                download
-                class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-medium transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 text-sm md:text-base"
-              >
-                <Icon name="fa:download" />
-                Télécharger
-              </a>
+              <p class="text-base font-medium mb-2 text-center">Aperçu du CV non supporté sur mobile.</p>
+              <a href="/amir-talbi-cv.pdf" target="_blank" class="px-4 py-2 bg-primary text-black rounded-lg font-medium">Ouvrir dans un nouvel onglet</a>
+              <a href="/amir-talbi-cv.pdf" download class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium">Télécharger</a>
             </div>
-            <div
-              v-else
-              class="bg-gray-800/50 rounded-xl p-2 md:p-4 mb-4 md:mb-6"
-            >
-              <div
-                class="aspect-[210/297] bg-white rounded-lg overflow-hidden relative"
-              >
-                <!-- Affichage du PDF directement dans un iframe -->
+            <div v-else class="bg-gray-800/50 rounded-xl p-2 md:p-4 mb-4 md:mb-6">
+              <div class="aspect-[210/297] bg-white rounded-lg overflow-hidden">
                 <iframe
                   src="/amir-talbi-cv.pdf#toolbar=0&navpanes=0&scrollbar=0"
                   class="w-full h-full rounded-lg"
-                  title="Aperçu du CV de Amir Talbi"
+                  title="Aperçu du CV"
                   @error="handleIframeError"
-                >
-                </iframe>
-                <!-- Fallback si le PDF ne se charge pas -->
-                <div
-                  v-if="iframeError"
-                  class="absolute inset-0 flex items-center justify-center bg-white rounded-lg"
-                >
+                ></iframe>
+                <div v-if="iframeError" class="absolute inset-0 flex items-center justify-center bg-white rounded-lg">
                   <div class="text-center text-gray-600 p-4">
-                    <Icon
-                      name="fa:file-pdf-o"
-                      class="text-4xl md:text-6xl mb-2 md:mb-4 text-red-500"
-                    />
+                    <Icon name="fa:file-pdf-o" class="text-4xl md:text-6xl mb-2 text-red-500" />
                     <p class="text-base md:text-lg font-medium">Aperçu du CV</p>
                     <p class="text-xs md:text-sm">amir-talbi-cv.pdf</p>
-                    <p class="text-xs mt-2 text-gray-500">
-                      Utilisez les boutons ci-dessous pour télécharger ou ouvrir
-                      le CV
-                    </p>
                   </div>
                 </div>
               </div>
             </div>
-
-            <!-- Boutons d'action -->
-            <div
-              class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center"
-            >
+            <div class="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
               <button
                 @click="closeCvModal"
-                class="px-4 md:px-6 py-2 md:py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg font-medium transition-colors duration-200 cursor-pointer flex items-center justify-center gap-2 text-sm md:text-base"
+                class="px-4 md:px-6 py-2 md:py-3 bg-gray-700 hover:bg-gray-600 text-white rounded-lg font-medium"
               >
-                <Icon name="fa:times" />
                 Fermer
               </button>
-
-              <a
-                href="/amir-talbi-cv.pdf"
-                download="amir-talbi-cv.pdf"
-                class="px-4 md:px-6 py-2 md:py-3 bg-primary hover:bg-primary/80 text-white rounded-lg font-medium transition-all duration-200 hover:shadow-lg hover:shadow-primary/25 cursor-pointer flex items-center justify-center gap-2 text-sm md:text-base"
-              >
-                <Icon name="fa:download" />
-                Télécharger
+              <a href="/amir-talbi-cv.pdf" download class="px-4 md:px-6 py-2 md:py-3 bg-primary text-black rounded-lg font-medium">
+                <Icon name="fa:download" /> Télécharger
               </a>
-
-              <a
-                href="/amir-talbi-cv.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="px-4 md:px-6 py-2 md:py-3 bg-blue-600 hover:bg-blue-500 text-white rounded-lg font-medium transition-all duration-200 cursor-pointer flex items-center justify-center gap-2 text-sm md:text-base"
-              >
-                <Icon name="fa:external-link" />
-                Ouvrir dans un nouvel onglet
+              <a href="/amir-talbi-cv.pdf" target="_blank" rel="noopener" class="px-4 md:px-6 py-2 md:py-3 bg-blue-600 text-white rounded-lg font-medium">
+                <Icon name="fa:external-link" /> Ouvrir
               </a>
             </div>
           </div>
@@ -475,56 +413,16 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, computed } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 
-// État de la modale CV
 const showCvModal = ref(false);
 const iframeError = ref(false);
-
-// Détection mobile simple
 const isMobile = ref(false);
-onMounted(() => {
-  isMobile.value =
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-      navigator.userAgent
-    );
-});
-
-// Fonctions pour gérer la modale
-const openCvModal = () => {
-  console.log("Opening CV modal"); // Debug
-  showCvModal.value = true;
-  iframeError.value = false; // Reset error state
-  console.log("Modal state:", showCvModal.value); // Debug
-  // Empêcher le scroll du body (seulement côté client)
-  if (process.client) {
-    document.body.style.overflow = "hidden";
-  }
-};
-
-const closeCvModal = () => {
-  console.log("Closing CV modal"); // Debug
-  showCvModal.value = false;
-  console.log("Modal state:", showCvModal.value); // Debug
-  // Restaurer le scroll du body (seulement côté client)
-  if (process.client) {
-    document.body.style.overflow = "auto";
-  }
-};
-
-const handleIframeError = () => {
-  console.log("Iframe error, showing fallback");
-  iframeError.value = true;
-};
-
-// Fermer la modale avec Escape (seulement côté client)
-const handleKeydown = (event) => {
-  if (event.key === "Escape" && showCvModal.value) {
-    closeCvModal();
-  }
-};
 
 onMounted(() => {
+  isMobile.value = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  );
   if (process.client) {
     document.addEventListener("keydown", handleKeydown);
   }
@@ -537,71 +435,96 @@ onUnmounted(() => {
   }
 });
 
-const projects = ref([
-  {
-    name: "Rent a Park",
-    title: "Le Airbnb des places de parking",
-    description:
-      "Rent A Park est une plateforme web et mobile permettant aux particuliers de louer leurs places de parking à d'autres conducteurs. Elle intègre la géolocalisation, le paiement sécurisé, la gestion des disponibilités et un système d'évaluations. L'objectif : optimiser l'usage des parkings et simplifier la réservation d'une place.",
-    image: "",
-    technologies: ["Nuxt.js", "NestJS", "MongoDB", "Tailwind CSS"],
-    link: "",
-    finished: false,
-  },
+const openCvModal = () => {
+  showCvModal.value = true;
+  iframeError.value = false;
+  if (process.client) {
+    document.body.style.overflow = "hidden";
+  }
+};
+
+const closeCvModal = () => {
+  showCvModal.value = false;
+  if (process.client) {
+    document.body.style.overflow = "auto";
+  }
+};
+
+const handleIframeError = () => {
+  iframeError.value = true;
+};
+
+const handleKeydown = (event) => {
+  if (event.key === "Escape" && showCvModal.value) {
+    closeCvModal();
+  }
+};
+
+const featuredProjects = ref([
   {
     name: "TripLegal",
-    title: "La plateforme juridique pour les chauffeurs VTC",
-    description: "TripLegal est une plateforme dédiée aux chauffeurs VTC, leur permettant de générer des bons de commandes, de recevoir des paiements et d'être légalement aptes à recevoir des clients sans passer par des plateformes.",
-    image: "",
-    technologies: ["Nuxt.js", "NestJS", "Postgres", "Tailwind CSS"],
+    title: "Plateforme juridique pour chauffeurs VTC",
+    description:
+      "J’ai conçu TripLegal comme une suite verticale où les chauffeurs rédigent des bons de commande, gèrent les paiements et restent conformes au cadre légal en quelques clics.",
+    status: "Live",
+    challenge: "Structurer un stack complet (frontend, API, infra) pour digitaliser la conformité en quelques semaines.",
+    role: "Lead dev full stack · CI/CD, API NestJS, Nuxt + Traefik + Postgres.",
+  impact: "Permet aux chauffeurs VTC autour de moi de gérer leurs courses hors plateformes classiques, de centraliser commandes/paiements et de rester conformes sans attendre un support externe.",
+    technologies: ["Nuxt.js", "NestJS", "PostgreSQL", "Traefik", "Docker"],
     link: "https://triplegal.fr",
-    finished: true,
+    repo: "https://github.com/amirtalbi/triplegal",
+    metrics: null,
   },
   {
     name: "GoVTC API",
-    title: "API complète pour plateforme de transport VTC",
+    title: "API temps réel pour plateforme VTC",
     description:
-      "GoVTC API est une API robuste développée pour une plateforme de transport VTC. Elle gère l'authentification, la géolocalisation en temps réel, les réservations, les paiements et la communication entre chauffeurs et passagers via WebSockets. L'architecture modulaire avec NestJS permet une scalabilité optimale.",
-    image: "",
-    technologies: ["NestJS", "MongoDB", "Socket.io", "Docker", "JWT", "TypeScript"],
+      "J’ai développé une API modulaire (auth, paiement, géolocalisation, WebSockets) qui alimente les apps clients, chauffeurs et dispatchers.",
+    status: "Maintenance",
+    challenge: "Permettre l’échange multi-acteurs et la communication en temps réel avec un seul service NestJS.",
+    role: "Backend Lead · architecture modulaire, WebSockets, observabilité Prometheus + Grafana.",
+  impact: null,
+    technologies: ["NestJS", "Socket.io", "MongoDB", "Docker", "Redis"],
     link: "https://go-vtc.amirtalbi.me/",
-    finished: true,
+    repo: "https://github.com/amirtalbi/go-vtc-api",
+    metrics: null,
   },
   {
-    name: "Webinnov Paris",
-    title: "Un site vitrine pour une agence de développement web",
+    name: "Rent a Park",
+    title: "Marketplace de places de parking",
     description:
-      "Le site vitrine de Webinnov Paris présente les services, les réalisations et l'expertise de l'équipe en développement web et mobile. Il offre un aperçu des projets menés, des compétences techniques et des méthodes de travail. Sa vocation : informer, rassurer et convaincre les prospects de collaborer avec Webinnov.",
-    image: "/assets/webinnov.png",
-    technologies: ["Nuxt.js", "Tailwind CSS"],
+      "Réalisation d’une marketplace Web/Mobile (Nuxt/Nest) avec réservation, géolocalisation, paiement Stripe et suivi de disponibilité temps réel.",
+    status: "MVP",
+    challenge: "Accélérer la livraison d’une MVP fonctionnelle en moins de 2 semaines tout en sécurisant le paiement et les disponibilités.",
+    role: "Lead full stack · Nuxt 3, NestJS, Stripe, tests E2E, déploiement Traefik + Mongo.",
+  impact: null,
+    technologies: ["Nuxt 3", "NestJS", "MongoDB", "Stripe", "Traefik"],
+    link: null,
+    repo: null,
+    metrics: null,
+  },
+]);
+
+const otherProjects = ref([
+  {
+    name: "Webinnov Paris",
+    status: "Live",
+    summary: "Site vitrine statique riche en contenus dynamiques pour l’agence Webinnov — décliné sur Nuxt, Tailwind et newsletter API.",
+    technologies: ["Nuxt.js", "Tailwind CSS", "Markdown", "Netlify"],
     link: "https://webinnov-paris.fr/",
-    finished: true,
   },
   {
     name: "Morpion",
-    title: "Jeu de morpion en ligne",
-    description:
-      "Un jeu de morpion en ligne permettant de jouer contre un ami. Il propose une interface simple et intuitive, avec des graphismes modernes et une expérience utilisateur fluide.",
-    image: "",
-    technologies: [
-      "Vue.js",
-      "Tailwind CSS",
-      "Express.js",
-      "Socket.io",
-      "Docker",
-    ],
-    link: "https://github.com/amirtalbi/morpion-web-socket",
-    finished: true,
+    status: "Archive",
+    summary: "Jeu WebSocket en duo (Vue + Express) pour comprendre la synchronisation temps réel et les sessions partagées.",
+    technologies: ["Vue.js", "Socket.io", "Docker"],
+    repo: "https://github.com/amirtalbi/morpion-web-socket",
   },
   {
     name: "GoMemories",
-    title: "Une plateforme de partage de souvenirs",
-    description:
-      "GoMemories est une plateforme de partage de souvenirs qui permet aux utilisateurs de créer, partager et découvrir des moments mémorables.",
-    image: "/assets/go-memories.png",
-    technologies: ["Vue.js", "Tailwind CSS", "Express.js", "Minio", "Docker"],
-    link: "",
-    finished: true,
+    status: "Prototype",
+    summary: "Plateforme de souvenirs avec upload, minio + API Express et authentification JWT.",
+    technologies: ["Vue.js", "Minio", "Node.js"],
   },
 ]);
 
@@ -610,73 +533,31 @@ const skills = ref([
     category: "Frontend",
     icon: "fa:code",
     color: "from-blue-400 to-blue-600",
-    skills: [
-      "Vue.js",
-      "Nuxt.js",
-      "JavaScript",
-      "TypeScript",
-      "HTML5",
-      "CSS3",
-      "Tailwind CSS",
-    ],
+    skills: ["Vue.js", "Nuxt.js", "JavaScript", "TypeScript", "HTML", "CSS", "Tailwind"],
   },
   {
     category: "Backend",
     icon: "fa:server",
     color: "from-green-400 to-green-600",
-    skills: [
-      "Node.js",
-      "NestJS",
-      "Express.js",
-      "PHP",
-      "Symfony",
-      "API REST",
-      "GraphQL",
-    ],
+    skills: ["Node.js", "NestJS", "Express", "API REST", "GraphQL", "Socket.io"],
   },
   {
     category: "DevOps",
     icon: "fa:cogs",
     color: "from-purple-400 to-purple-600",
-    skills: [
-      "Docker",
-      "Docker Compose",
-      "Git",
-      "GitHub Actions",
-      "Linux",
-      "Nginx",
-      "Apache",
-    ],
+    skills: ["Docker", "Traefik", "GitHub Actions", "Linux", "Nginx", "Monitoring"],
   },
   {
     category: "Bases de données",
     icon: "fa:database",
     color: "from-orange-400 to-orange-600",
-    skills: ["MongoDB", "MySQL", "PostgreSQL", "Redis", "Prisma", "Mongoose"],
+    skills: ["MongoDB", "PostgreSQL", "Redis", "Prisma", "Mongoose"],
   },
   {
-    category: "Outils & Technologies",
+    category: "Outils & Tech",
     icon: "fa:wrench",
     color: "from-pink-400 to-pink-600",
-    skills: ["VS Code", "Figma", "Postman", "Trello", "Minio", "Socket.io"],
+    skills: ["VS Code", "Figma", "Postman", "Rclone", "Socket.io"],
   },
 ]);
 </script>
-
-<style scoped>
-.animate-fade-in {
-  animation: fadeIn 0.8s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-</style>
